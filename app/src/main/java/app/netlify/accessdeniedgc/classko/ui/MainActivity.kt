@@ -1,7 +1,8 @@
-package app.netlify.accessdeniedgc.classko
+package app.netlify.accessdeniedgc.classko.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import app.netlify.accessdeniedgc.classko.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
