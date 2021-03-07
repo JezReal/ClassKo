@@ -8,5 +8,14 @@
         android:id="@+id/signInFragment"
         android:name="app.netlify.accessdeniedgc.classko.ui.signin.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" />
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_classActivity2"
+            app:destination="@id/classActivity2" />
+    </fragment>
+    <activity
+        android:id="@+id/classActivity2"
+        android:name="app.netlify.accessdeniedgc.classko.ui.class.ClassActivity"
+        android:label="activity_class"
+        tools:layout="@layout/activity_class" />
 </navigation>
