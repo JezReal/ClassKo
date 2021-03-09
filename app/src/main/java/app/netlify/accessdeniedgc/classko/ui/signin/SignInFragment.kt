@@ -1,10 +1,14 @@
 package app.netlify.accessdeniedgc.classko.ui.signin
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import app.netlify.accessdeniedgc.classko.databinding.FragmentSignInBinding
@@ -12,17 +16,31 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
-import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
-
-private const val RC_SIGN_IN = 9001
 
 class SignInFragment : Fragment() {
 
     private lateinit var binding: FragmentSignInBinding
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var accountLauncher: ActivityResultLauncher<Intent>
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        accountLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val bundle = result.data?.extras
+                    val account = bundle!!.get("googleSignInAccount") as GoogleSignInAccount
+                    handleResult(account)
+                } else {
+                    //TODO: show an error message or something
+                    Timber.d("SignIn failed")
+                    Snackbar.make(binding.root, "SignIn failed", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,27 +71,13 @@ class SignInFragment : Fragment() {
     }
 
     private fun handleSignIn() {
-
-        //TODO: replace deprecated methods
         val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        accountLauncher.launch(signInIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RC_SIGN_IN) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
 
-            handleResult(task)
-        }
-    }
-
-    private fun handleResult(task: Task<GoogleSignInAccount>) {
-        try {
-            val account = task.getResult(ApiException::class.java)
-            Timber.d("Logged in: ${account!!.email}")
-            findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToClassActivity2())
-        } catch (e: ApiException) {
-            Timber.d("Something went wrong: ${e.message}")
-        }
+    private fun handleResult(account: GoogleSignInAccount) {
+        Timber.d("Logged in: ${account.email}")
+        findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToClassActivity2())
     }
 }
