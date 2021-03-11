@@ -30,31 +30,16 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+        appBarConfiguration = AppBarConfiguration.Builder(
+            R.id.splashFragment,
+            R.id.signInFragment
+        ).build()
 
-        val drawerLayout = binding.drawerLayout
-
-        val homeDestinations = setOf(R.id.signInFragment, R.id.classFragment)
-        appBarConfiguration = AppBarConfiguration(homeDestinations, drawerLayout)
-
-        val listener =
-            NavController.OnDestinationChangedListener { navController, destination, bundle ->
-                if (destination.id == R.id.signInFragment) {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                } else {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                }
-            }
-
-        navController.addOnDestinationChangedListener(listener)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        NavigationUI.setupWithNavController(binding.navigationView, navController)
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(
-            navController,
-            appBarConfiguration
-        ) || super.onSupportNavigateUp()
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

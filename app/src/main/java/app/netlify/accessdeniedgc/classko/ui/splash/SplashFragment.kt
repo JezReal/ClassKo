@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import app.netlify.accessdeniedgc.classko.R
 import app.netlify.accessdeniedgc.classko.databinding.FragmentSplashBinding
 import app.netlify.accessdeniedgc.classko.ui.`class`.ClassActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn

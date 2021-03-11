@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/class_nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/class_nav_graph"
+    app:startDestination="@id/classFragment2">
 
+    <fragment
+        android:id="@+id/classFragment2"
+        android:name="app.netlify.accessdeniedgc.classko.ui.class.ClassFragment"
+        android:label="fragment_class"
+        tools:layout="@layout/fragment_class">
+        <action
+            android:id="@+id/action_classFragment2_to_addEventFragment2"
+            app:destination="@id/addEventFragment2" />
+    </fragment>
+    <dialog
+        android:id="@+id/addEventFragment2"
+        android:name="app.netlify.accessdeniedgc.classko.ui.class.AddEventFragment"
+        android:label="fragment_add_event"
+        tools:layout="@layout/fragment_add_event" />
+    <fragment
+        android:id="@+id/firstFragment"
+        android:name="app.netlify.accessdeniedgc.classko.ui.class.FirstFragment"
+        android:label="fragment_first"
+        tools:layout="@layout/fragment_first" />
+    <fragment
+        android:id="@+id/secondFragment"
+        android:name="app.netlify.accessdeniedgc.classko.ui.class.SecondFragment"
+        android:label="fragment_second"
+        tools:layout="@layout/fragment_second" />
 </navigation>

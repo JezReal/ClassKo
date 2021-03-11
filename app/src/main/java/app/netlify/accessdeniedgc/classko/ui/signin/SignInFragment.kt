@@ -77,6 +77,8 @@ class SignInFragment : Fragment() {
     }
 
     private fun navigateToClassActivity() {
+//        val intent = Intent(this.requireActivity(), ClassActivity::class.java)
+//        startActivity(intent)
         findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToNavigation())
     }
 }

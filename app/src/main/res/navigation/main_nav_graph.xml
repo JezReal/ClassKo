@@ -9,7 +9,7 @@
         android:id="@+id/splashFragment"
         android:name="app.netlify.accessdeniedgc.classko.ui.splash.SplashFragment"
         android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
+        tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -32,38 +32,17 @@
             app:popUpTo="@id/signInFragment"
             app:popUpToInclusive="true" />
     </fragment>
-    <navigation android:id="@+id/navigation"
-        app:startDestination="@id/classFragment">
-        <fragment
-            android:id="@+id/classFragment"
-            android:name="app.netlify.accessdeniedgc.classko.ui.class.ClassFragment"
-            android:label="fragment_class"
-            tools:layout="@layout/fragment_class" >
-            <action
-                android:id="@+id/action_classFragment_to_addEventFragment2"
-                app:destination="@id/addEventFragment" />
-        </fragment>
-        <dialog
-            android:id="@+id/addEventFragment"
-            android:name="app.netlify.accessdeniedgc.classko.ui.class.AddEventFragment"
-            android:label="fragment_add_event"
-            tools:layout="@layout/fragment_add_event" />
+    <action
+        android:id="@+id/action_global_signInFragment"
+        app:destination="@id/signInFragment" />
+
+    <navigation
+        android:id="@+id/navigation"
+        app:startDestination="@id/class_nav_graph">
+
         <action
-            android:id="@+id/action_global_signInFragment"
-            app:destination="@id/signInFragment"
-            app:launchSingleTop="false"
-            app:popUpTo="@id/classFragment"
-            app:popUpToInclusive="true" />
-        <fragment
-            android:id="@+id/firstFragment"
-            android:name="app.netlify.accessdeniedgc.classko.ui.class.FirstFragment"
-            android:label="fragment_first"
-            tools:layout="@layout/fragment_first" />
-        <fragment
-            android:id="@+id/secondFragment"
-            android:name="app.netlify.accessdeniedgc.classko.ui.class.SecondFragment"
-            android:label="fragment_second"
-            tools:layout="@layout/fragment_second" />
+            android:id="@+id/action_global_signInFragment2"
+            app:destination="@id/signInFragment" />
     </navigation>
 
 </navigation>

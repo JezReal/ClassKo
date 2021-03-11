@@ -10,7 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ClassKo">
-        <activity android:name=".ui.main.MainActivity">
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,7 +20,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.class.ClassActivity" />
+        <activity
+            android:name=".ui.class.ClassActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

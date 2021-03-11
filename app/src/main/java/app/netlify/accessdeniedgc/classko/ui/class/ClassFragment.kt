@@ -1,5 +1,6 @@
 package app.netlify.accessdeniedgc.classko.ui.`class`
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -10,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import app.netlify.accessdeniedgc.classko.R
 import app.netlify.accessdeniedgc.classko.databinding.FragmentClassBinding
+import app.netlify.accessdeniedgc.classko.ui.main.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
@@ -47,7 +49,7 @@ class ClassFragment : Fragment() {
         }
 
         binding.addEventFab.setOnClickListener {
-            findNavController().navigate(ClassFragmentDirections.actionClassFragmentToAddEventFragment2())
+            findNavController().navigate(ClassFragmentDirections.actionClassFragment2ToAddEventFragment2())
         }
 
         return binding.root
@@ -60,7 +62,7 @@ class ClassFragment : Fragment() {
     }
 
     private fun navigateToSignInActivity() {
-        findNavController().navigate(R.id.action_global_signInFragment)
+        findNavController().navigate(R.id.action_global_signInFragment2)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
