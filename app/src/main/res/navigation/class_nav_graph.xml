@@ -1,22 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/class_nav_graph"
-    app:startDestination="@id/classFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/class_nav_graph">
 
-    <fragment
-        android:id="@+id/classFragment"
-        android:name="app.netlify.accessdeniedgc.classko.ui.class.ClassFragment"
-        android:label="fragment_class"
-        tools:layout="@layout/fragment_class" >
-        <action
-            android:id="@+id/action_classFragment_to_signInActivity2"
-            app:destination="@id/signInActivity2" />
-    </fragment>
-    <activity
-        android:id="@+id/signInActivity2"
-        android:name="app.netlify.accessdeniedgc.classko.ui.signin.SignInActivity"
-        android:label="activity_sign_in"
-        tools:layout="@layout/activity_sign_in" />
 </navigation>

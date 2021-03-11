@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import app.netlify.accessdeniedgc.classko.databinding.FragmentSignInBinding
+import app.netlify.accessdeniedgc.classko.ui.`class`.ClassActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -33,7 +34,7 @@ class SignInFragment : Fragment() {
                 if (result.resultCode == Activity.RESULT_OK) {
                     val bundle = result.data?.extras
                     val account = bundle!!.get("googleSignInAccount") as GoogleSignInAccount
-                    handleResult(account)
+                    navigateToClassActivity()
                 } else {
                     //TODO: show an error message or something
                     Timber.d("SignIn failed")
@@ -75,9 +76,7 @@ class SignInFragment : Fragment() {
         accountLauncher.launch(signInIntent)
     }
 
-
-    private fun handleResult(account: GoogleSignInAccount) {
-        Timber.d("Logged in: ${account.email}")
-        findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToClassActivity2())
+    private fun navigateToClassActivity() {
+        findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToNavigation())
     }
 }
