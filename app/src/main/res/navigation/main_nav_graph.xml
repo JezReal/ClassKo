@@ -55,15 +55,10 @@
             app:popUpTo="@id/classFragment"
             app:popUpToInclusive="true" />
         <fragment
-            android:id="@+id/firstFragment"
-            android:name="app.netlify.accessdeniedgc.classko.ui.class.FirstFragment"
-            android:label="fragment_first"
-            tools:layout="@layout/fragment_first" />
-        <fragment
-            android:id="@+id/secondFragment"
-            android:name="app.netlify.accessdeniedgc.classko.ui.class.SecondFragment"
-            android:label="fragment_second"
-            tools:layout="@layout/fragment_second" />
+            android:id="@+id/aboutFragment"
+            android:name="app.netlify.accessdeniedgc.classko.ui.class.AboutFragment"
+            android:label="fragment_about"
+            tools:layout="@layout/fragment_about" />
     </navigation>
 
 </navigation>

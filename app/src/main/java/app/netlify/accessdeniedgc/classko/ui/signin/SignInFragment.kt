@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import app.netlify.accessdeniedgc.classko.R
 import app.netlify.accessdeniedgc.classko.databinding.FragmentSignInBinding
-import app.netlify.accessdeniedgc.classko.ui.`class`.ClassActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -49,6 +50,8 @@ class SignInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignInBinding.inflate(layoutInflater, container, false)
+
+        binding = FragmentSignInBinding.inflate(inflater, container, false)
 
         setUpListener()
 

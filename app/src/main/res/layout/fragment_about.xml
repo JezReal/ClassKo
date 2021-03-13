@@ -4,17 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="app.netlify.accessdeniedgc.classko.ui.signin.SignInFragment"
-    style="@style/Theme.ClassKo.Login">
+    tools:context="app.netlify.accessdeniedgc.classko.ui.class.AboutFragment">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign in"
+        android:text="About section"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,18 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import app.netlify.accessdeniedgc.classko.databinding.FragmentFirstBinding
+import app.netlify.accessdeniedgc.classko.databinding.FragmentAboutBinding
 
-class FirstFragment : Fragment() {
+class AboutFragment : Fragment() {
 
-    private lateinit var binding: FragmentFirstBinding
+    private lateinit var binding: FragmentAboutBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFirstBinding.inflate(layoutInflater, container, false)
+        binding = FragmentAboutBinding.inflate(layoutInflater, container, false)
 
         return binding.root
     }
