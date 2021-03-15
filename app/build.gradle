@@ -1,9 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -34,6 +34,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.incremental":"true"]
+            }
+        }
     }
 
     buildTypes {
@@ -82,10 +88,6 @@ dependencies {
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
-
-    //Hilt ViewModel
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_viewmodel_version"
-    kapt "androidx.hilt:hilt-compiler:$hilt_viewmodel_version"
 
     //Navigation component
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
