@@ -6,11 +6,7 @@
         android:icon="@drawable/ic_baseline_exit_to_app_24"
         android:title="Logout"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/user_email_address"
-        android:title="Signed in as: " />
-
-    <item
-        android:id="@+id/aboutFragment"
-        android:title="About" />
+<!--    <item-->
+<!--        android:id="@+id/user_email_address"-->
+<!--        android:title="Signed in as: " />-->
 </menu>
