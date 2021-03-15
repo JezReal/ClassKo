@@ -36,29 +36,24 @@
         app:startDestination="@id/classFragment">
         <fragment
             android:id="@+id/classFragment"
-            android:name="app.netlify.accessdeniedgc.classko.ui.class.ClassFragment"
+            android:name="app.netlify.accessdeniedgc.classko.ui.main.ClassFragment"
             android:label="fragment_class"
             tools:layout="@layout/fragment_class" >
             <action
-                android:id="@+id/action_classFragment_to_addEventFragment2"
+                android:id="@+id/action_classFragment_to_addEventFragment"
                 app:destination="@id/addEventFragment" />
         </fragment>
-        <dialog
-            android:id="@+id/addEventFragment"
-            android:name="app.netlify.accessdeniedgc.classko.ui.class.AddEventFragment"
-            android:label="fragment_add_event"
-            tools:layout="@layout/fragment_add_event" />
         <action
             android:id="@+id/action_global_signInFragment"
             app:destination="@id/signInFragment"
             app:launchSingleTop="false"
             app:popUpTo="@id/classFragment"
             app:popUpToInclusive="true" />
-        <fragment
-            android:id="@+id/aboutFragment"
-            android:name="app.netlify.accessdeniedgc.classko.ui.class.AboutFragment"
-            android:label="fragment_about"
-            tools:layout="@layout/fragment_about" />
+        <dialog
+            android:id="@+id/addEventFragment"
+            android:name="app.netlify.accessdeniedgc.classko.ui.main.AddEventFragment"
+            android:label="fragment_add_event"
+            tools:layout="@layout/fragment_add_event" />
     </navigation>
 
 </navigation>

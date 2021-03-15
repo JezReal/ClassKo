@@ -1,18 +1,14 @@
-package app.netlify.accessdeniedgc.classko.ui.main
+package app.netlify.accessdeniedgc.classko.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
 import app.netlify.accessdeniedgc.classko.R
 import app.netlify.accessdeniedgc.classko.databinding.ActivityMainBinding
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
