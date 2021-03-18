@@ -37,7 +37,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.incremental":"true"]
+                arguments += ["room.incremental":"true"]
             }
         }
     }
@@ -89,6 +89,11 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
+    //Hilt ViewModel
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_viewmodel_version"
+    kapt "androidx.hilt:hilt-compiler:$hilt_viewmodel_version"
+
+
     //Navigation component
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
@@ -131,4 +136,8 @@ dependencies {
     implementation('com.google.api-client:google-api-client-android:1.30.5') {
         exclude group: 'org.apache.httpcomponents'
     }
+}
+
+kapt {
+    correctErrorTypes true
 }
