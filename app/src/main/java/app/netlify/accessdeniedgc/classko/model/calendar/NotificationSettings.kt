@@ -1,4 +1,4 @@
-package app.netlify.accessdeniedgc.classko.model.calendarlist
+package app.netlify.accessdeniedgc.classko.model.calendar
 
 
 import com.squareup.moshi.Json
