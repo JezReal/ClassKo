@@ -5,11 +5,11 @@ import com.google.android.gms.common.api.Scope
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.FragmentComponent
 
-@InstallIn(ActivityComponent::class)
+@InstallIn(FragmentComponent::class)
 @Module
-object ActivityModule {
+object FragmentModule {
 
     @Provides
     fun provideGoogleSignInOptions(): GoogleSignInOptions {

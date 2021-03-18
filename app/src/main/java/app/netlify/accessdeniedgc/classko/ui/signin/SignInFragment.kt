@@ -22,18 +22,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SignInFragment : Fragment() {
 
     private lateinit var binding: FragmentSignInBinding
+
     private lateinit var googleSignInClient: GoogleSignInClient
+
     private lateinit var accountLauncher: ActivityResultLauncher<Intent>
 
     private val signInFragmentViewModel: SignInFragmentViewModel by viewModels()
 
-    private lateinit var googleSignInOptions: GoogleSignInOptions
+    @Inject
+    lateinit var googleSignInOptions: GoogleSignInOptions
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,20 +64,9 @@ class SignInFragment : Fragment() {
     ): View? {
         binding = FragmentSignInBinding.inflate(layoutInflater, container, false)
 
-        binding = FragmentSignInBinding.inflate(inflater, container, false)
-
-        setUpListener()
-        googleSignInOptions = GoogleSignInOptions.Builder(
-            GoogleSignInOptions.DEFAULT_SIGN_IN
-        )
-            .requestEmail()
-            .requestScopes(
-                Scope("https://www.googleapis.com/auth/calendar"),
-                Scope("https://www.googleapis.com/auth/calendar.events")
-            )
-            .build()
         googleSignInClient = GoogleSignIn.getClient(this.requireActivity(), googleSignInOptions)
 
+        setUpListener()
         observeEvents()
 
         return binding.root

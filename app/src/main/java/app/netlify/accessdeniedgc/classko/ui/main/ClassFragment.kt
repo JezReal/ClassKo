@@ -1,6 +1,5 @@
 package app.netlify.accessdeniedgc.classko.ui.main
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -13,16 +12,19 @@ import app.netlify.accessdeniedgc.classko.databinding.FragmentClassBinding
 import app.netlify.accessdeniedgc.classko.viewmodel.`class`.ClassFragmentViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.Scope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ClassFragment : Fragment() {
 
     private lateinit var binding: FragmentClassBinding
 
-    private lateinit var googleSignInOptions: GoogleSignInOptions
+    @Inject
+    lateinit var googleSignInOptions: GoogleSignInOptions
     private val classFragmentViewModel: ClassFragmentViewModel by viewModels()
 
     override fun onCreateView(
@@ -32,21 +34,9 @@ class ClassFragment : Fragment() {
     ): View? {
         binding = FragmentClassBinding.inflate(layoutInflater, container, false)
 
-        binding.addEventFab.setOnClickListener {
-            classFragmentViewModel.addNewEvent()
-        }
-
-        googleSignInOptions = GoogleSignInOptions.Builder(
-            GoogleSignInOptions.DEFAULT_SIGN_IN
-        )
-            .requestEmail()
-            .requestScopes(
-                Scope("https://www.googleapis.com/auth/calendar"),
-                Scope("https://www.googleapis.com/auth/calendar.events")
-            )
-            .build()
-
+        setListeners()
         observeEvents()
+        getCalendar()
 
         setHasOptionsMenu(true)
         return binding.root
@@ -89,6 +79,12 @@ class ClassFragment : Fragment() {
         navigateToSignInFragment()
     }
 
+    private fun setListeners() {
+        binding.addEventFab.setOnClickListener {
+            classFragmentViewModel.addNewEvent()
+        }
+    }
+
     private fun observeEvents() {
         lifecycleScope.launchWhenStarted {
             classFragmentViewModel.classFragmentEvent.collect { event ->
@@ -119,5 +115,9 @@ class ClassFragment : Fragment() {
                 handleLogOut()
             }
             .show()
+    }
+
+    private fun getCalendar() {
+
     }
 }
