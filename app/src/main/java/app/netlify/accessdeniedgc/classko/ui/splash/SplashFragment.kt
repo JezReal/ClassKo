@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import app.netlify.accessdeniedgc.classko.databinding.FragmentSplashBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 
-
 class SplashFragment : Fragment() {
 
     private lateinit var binding: FragmentSplashBinding
