@@ -9,7 +9,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import app.netlify.accessdeniedgc.classko.R
 import app.netlify.accessdeniedgc.classko.databinding.FragmentClassBinding
-import app.netlify.accessdeniedgc.classko.viewmodel.`class`.ClassFragmentViewModel
+import app.netlify.accessdeniedgc.classko.model.calendar.CalendarList
+import app.netlify.accessdeniedgc.classko.model.event.EventsList
+import app.netlify.accessdeniedgc.classko.viewmodel.main.ClassFragmentViewModel
+import app.netlify.accessdeniedgc.classko.viewmodel.main.ClassFragmentViewModel.ClassFragmentEvent.NavigateToAddEventFragment
+import app.netlify.accessdeniedgc.classko.viewmodel.main.ClassFragmentViewModel.ClassFragmentEvent.NavigateToSignInFragment
+import app.netlify.accessdeniedgc.classko.viewmodel.main.ClassFragmentViewModel.ClassFragmentState
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -35,8 +40,8 @@ class ClassFragment : Fragment() {
         binding = FragmentClassBinding.inflate(layoutInflater, container, false)
 
         setListeners()
+        observeState()
         observeEvents()
-        getCalendar()
 
         setHasOptionsMenu(true)
         return binding.root
@@ -46,10 +51,6 @@ class ClassFragment : Fragment() {
         super.onStart()
         val googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this.requireActivity())
         binding.emailAddress.text = googleSignInAccount!!.email
-    }
-
-    private fun navigateToSignInFragment() {
-        findNavController().navigate(ClassFragmentDirections.actionGlobalSignInFragment())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -69,19 +70,36 @@ class ClassFragment : Fragment() {
         }
     }
 
-    private fun handleLogOut() {
-        val googleSignInClient = GoogleSignIn.getClient(this.requireActivity(), googleSignInOptions)
-
-        googleSignInClient.signOut().addOnCompleteListener {
-            Timber.d("You have been logged out")
-        }
-
-        navigateToSignInFragment()
-    }
-
     private fun setListeners() {
         binding.addEventFab.setOnClickListener {
             classFragmentViewModel.addNewEvent()
+        }
+    }
+
+    private fun observeState() {
+        classFragmentViewModel.classFragmentState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is ClassFragmentState.Empty -> {
+                    classFragmentViewModel.loadCalendarList()
+                }
+                is ClassFragmentState.Loading -> {
+                    //TODO: update UI to inform user somethng it loading
+                    Timber.d("Loading")
+                }
+                is ClassFragmentState.Success<*> -> {
+                    //TODO: update UI to show data
+                    if (state.data is CalendarList) {
+                        Timber.d("Result is calendar list")
+                    } else if (state.data is EventsList) {
+                        Timber.d("Result is events list")
+                    }
+                    Timber.d("Success")
+                }
+                is ClassFragmentState.Failure -> {
+                    //TODO: show error message to user
+                    Timber.d("Something went wrong: ${state.message}")
+                }
+            }
         }
     }
 
@@ -89,10 +107,10 @@ class ClassFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             classFragmentViewModel.classFragmentEvent.collect { event ->
                 when (event) {
-                    is ClassFragmentViewModel.ClassFragmentEvent.NavigateToAddEventFragment -> {
+                    is NavigateToAddEventFragment -> {
                         addEvent()
                     }
-                    is ClassFragmentViewModel.ClassFragmentEvent.NavigateToSignInFragment -> {
+                    is NavigateToSignInFragment -> {
                         showLogoutDialog()
                     }
                 }
@@ -117,7 +135,17 @@ class ClassFragment : Fragment() {
             .show()
     }
 
-    private fun getCalendar() {
+    private fun handleLogOut() {
+        val googleSignInClient = GoogleSignIn.getClient(this.requireActivity(), googleSignInOptions)
 
+        googleSignInClient.signOut().addOnCompleteListener {
+            Timber.d("You have been logged out")
+        }
+
+        navigateToSignInFragment()
+    }
+
+    private fun navigateToSignInFragment() {
+        findNavController().navigate(ClassFragmentDirections.actionGlobalSignInFragment())
     }
 }
