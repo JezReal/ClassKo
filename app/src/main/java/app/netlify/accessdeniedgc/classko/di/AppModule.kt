@@ -1,6 +1,8 @@
 package app.netlify.accessdeniedgc.classko.di
 
 import app.netlify.accessdeniedgc.classko.network.GoogleCalendarApi
+import app.netlify.accessdeniedgc.classko.repository.calendar.CalendarRepository
+import app.netlify.accessdeniedgc.classko.repository.event.EventRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,4 +26,12 @@ object AppModule {
             .build()
             .create(GoogleCalendarApi::class.java)
     }
+
+    @Provides
+    fun provideCalendarRepository(api: GoogleCalendarApi) =
+        CalendarRepository(api)
+
+    @Provides
+    fun provideEventRepository(api: GoogleCalendarApi) =
+        EventRepository(api)
 }
