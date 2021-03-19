@@ -13,5 +13,5 @@ interface GoogleCalendarApi {
     suspend fun getCalendarList(): Response<CalendarList>
 
     @GET("calendars/{calendarId}/events")
-    suspend fun getEventList(@Path("calendarId") id: String): Response<List<EventsList>>
+    suspend fun getEventList(@Path("calendarId") id: String): Response<EventsList>
 }
