@@ -1,5 +1,4 @@
 package app.netlify.accessdeniedgc.classko.ui.signin
-
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -18,6 +17,7 @@ import app.netlify.accessdeniedgc.classko.viewmodel.signin.SignInFragmentViewMod
 import app.netlify.accessdeniedgc.classko.viewmodel.signin.SignInFragmentViewModel.SignInFragmentEvent.LaunchAccountChooser
 import app.netlify.accessdeniedgc.classko.viewmodel.signin.SignInFragmentViewModel.SignInFragmentEvent.NavigateToClassFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
@@ -47,7 +47,8 @@ class SignInFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val bundle = result.data?.extras
-//                    val account = bundle!!.get("googleSignInAccount") as GoogleSignInAccount
+                    val account = bundle!!.get("googleSignInAccount") as GoogleSignInAccount
+
                     signInFragmentViewModel.navigateToClassFragment()
                 } else {
                     //TODO: handle all possible errors

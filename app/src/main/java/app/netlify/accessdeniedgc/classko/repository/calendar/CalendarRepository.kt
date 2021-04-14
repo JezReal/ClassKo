@@ -24,7 +24,7 @@ class CalendarRepository @Inject constructor(
                 Timber.d(result.etag)
                 Resource.Success(result)
             } else {
-                Resource.Failure(response.message())
+                Resource.Failure("Failure: ${response.raw()}")
             }
         } catch (e: Exception) {
             Timber.d("Something went wrong: ${e.message}")

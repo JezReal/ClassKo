@@ -17,6 +17,7 @@ object FragmentModule {
             GoogleSignInOptions.DEFAULT_SIGN_IN
         )
             .requestEmail()
+            .requestId()
             .requestScopes(
                 Scope("https://www.googleapis.com/auth/calendar"),
                 Scope("https://www.googleapis.com/auth/calendar.events")
