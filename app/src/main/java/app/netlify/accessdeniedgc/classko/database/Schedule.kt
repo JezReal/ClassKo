@@ -12,9 +12,52 @@ data class Schedule(
     @ColumnInfo(name = "subject_name")
     val subjectName: String,
 
-    @ColumnInfo(name = "start_time")
-    val startTime: String,
+    @ColumnInfo(name = "time_hour")
+    val timeHour: Int,
 
-    @ColumnInfo(name = "end_time")
-    val endTime: String
-)
+    @ColumnInfo(name = "time_minute")
+    val timeMinute: Int,
+
+    val monday: Boolean,
+    val tuesday: Boolean,
+    val wednesday: Boolean,
+    val thursday: Boolean,
+    val friday: Boolean,
+    val saturday: Boolean,
+    val sunday: Boolean,
+
+    ) {
+    fun getDays(): String {
+        var days = ""
+
+        if (monday) {
+            days += "Mon "
+        }
+
+        if (tuesday) {
+            days += "Tue "
+        }
+
+        if (wednesday) {
+            days += "Wed "
+        }
+
+        if (thursday) {
+            days += "Thurs "
+        }
+
+        if (friday) {
+            days += "Fri "
+        }
+
+        if (saturday) {
+            days += "Sat "
+        }
+
+        if (sunday) {
+            days += "Sun "
+        }
+
+        return days
+    }
+}
