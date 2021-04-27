@@ -18,25 +18,7 @@ class ScheduleListFragmentViewModel @Inject constructor(
     private val repository: ScheduleRepository
 ) : ViewModel() {
 
-    private val _scheduleList =
-        MutableStateFlow<ScheduleListFragmentState>(Empty)
-    val scheduleList = _scheduleList.asLiveData()
-
-    fun getSchedules() {
-        _scheduleList.value = Loading
-
-        viewModelScope.launch(Dispatchers.Default) {
-            when (val scheduleList = repository.getSchedules()) {
-                is Resource.Success -> {
-                    _scheduleList.value = Success(scheduleList.data!!)
-                }
-
-                is Resource.Failure -> {
-                    _scheduleList.value = Failure(scheduleList.message!!)
-                }
-            }
-        }
-    }
+    val scheduleList = repository.schedules
 
     sealed class ScheduleListFragmentState {
         object Empty : ScheduleListFragmentState()
