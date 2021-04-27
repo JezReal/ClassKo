@@ -31,9 +31,6 @@ class AppModule {
             .create(ScheduleApi::class.java)
     }
 
-    @Provides
-    fun provideScheduleRepository(api: ScheduleApi) = ScheduleRepository(api)
-
     @Singleton
     @Provides
     fun provideScheduleDatabase(@ApplicationContext context: Context): ScheduleDatabase {
@@ -48,5 +45,8 @@ class AppModule {
     fun provideScheduleDao(database: ScheduleDatabase): ScheduleDao {
         return database.scheduleDao
     }
+
+    @Provides
+    fun provideScheduleRepository(api: ScheduleApi, dao: ScheduleDao) = ScheduleRepository(api, dao)
 
 }
