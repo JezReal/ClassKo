@@ -1,16 +1,17 @@
 package app.netlify.accessdeniedgc.classko.repository
 
+import app.netlify.accessdeniedgc.classko.database.ScheduleDao
 import app.netlify.accessdeniedgc.classko.model.Schedule
 import app.netlify.accessdeniedgc.classko.network.ScheduleApi
 import app.netlify.accessdeniedgc.classko.wrapper.Resource
-import java.lang.Exception
 import java.net.UnknownHostException
-
 import javax.inject.Inject
+import app.netlify.accessdeniedgc.classko.database.Schedule as ScheduleDB
 
 
 class ScheduleRepository @Inject constructor(
-    private val api: ScheduleApi
+    private val api: ScheduleApi,
+    private val dao: ScheduleDao
 ) {
 
     suspend fun getSchedules(): Resource<List<Schedule>> {
@@ -29,4 +30,10 @@ class ScheduleRepository @Inject constructor(
             Resource.Failure(e.message!!)
         }
     }
+
+    suspend fun insertSchedule(schedule: ScheduleDB) {
+        dao.insert(schedule)
+    }
+
+    val schedules = dao.getSchedules()
 }
