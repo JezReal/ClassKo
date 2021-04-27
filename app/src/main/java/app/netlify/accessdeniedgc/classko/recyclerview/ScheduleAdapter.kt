@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.netlify.accessdeniedgc.classko.databinding.ScheduleItemBinding
-import app.netlify.accessdeniedgc.classko.model.Schedule
+import app.netlify.accessdeniedgc.classko.database.Schedule
+import app.netlify.accessdeniedgc.classko.util.formatTime
 
 class ScheduleAdapter : ListAdapter<Schedule, ScheduleAdapter.ViewHolder>(ScheduleDiffCallback()) {
 
@@ -25,8 +26,11 @@ class ScheduleAdapter : ListAdapter<Schedule, ScheduleAdapter.ViewHolder>(Schedu
     ) : RecyclerView.ViewHolder(scheduleItemBinding.root) {
 
         fun bind(item: Schedule) {
-            scheduleItemBinding.subjectName.text = item.subject
-            scheduleItemBinding.timeText.text = item.startTime + " - " + item.endTime
+            scheduleItemBinding.apply {
+                subjectName.text = item.subjectName
+                timeText.text = formatTime(item.timeHour, item.timeMinute)
+                daysText.text = item.getDays()
+            }
         }
 
         companion object {
@@ -40,8 +44,12 @@ class ScheduleAdapter : ListAdapter<Schedule, ScheduleAdapter.ViewHolder>(Schedu
 }
 
 class ScheduleDiffCallback : DiffUtil.ItemCallback<Schedule>() {
-    override fun areItemsTheSame(oldItem: Schedule, newItem: Schedule) = oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: Schedule, newItem: Schedule): Boolean {
+        return oldItem.scheduleId == newItem.scheduleId
+    }
 
-    override fun areContentsTheSame(oldItem: Schedule, newItem: Schedule) = oldItem == newItem
+    override fun areContentsTheSame(oldItem: Schedule, newItem: Schedule): Boolean {
+        return oldItem == newItem
+    }
 
 }
