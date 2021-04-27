@@ -10,8 +10,6 @@ import androidx.navigation.fragment.findNavController
 import app.netlify.accessdeniedgc.classko.databinding.FragmentScheduleListBinding
 import app.netlify.accessdeniedgc.classko.recyclerview.ScheduleAdapter
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel
-import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentState.*
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,27 +38,12 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewModel.scheduleList.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is Empty -> {
-                    viewModel.getSchedules()
-                }
-                is Loading -> {
-                    binding.recyclerView.visibility = View.GONE
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                is Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.recyclerView.visibility = View.VISIBLE
-                    val adapter = ScheduleAdapter()
-                    binding.recyclerView.adapter = adapter
-                    adapter.submitList(state.schedules)
-                }
-                is Failure -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.recyclerView.visibility = View.GONE
-                    Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
-                }
+        //TODO: add button to clear local database then add edit and delete? functionality
+        val adapter = ScheduleAdapter()
+        binding.recyclerView.adapter = adapter
+        viewModel.scheduleList.observe(viewLifecycleOwner) {
+            it?.let {
+                adapter.submitList(it)
             }
         }
     }
