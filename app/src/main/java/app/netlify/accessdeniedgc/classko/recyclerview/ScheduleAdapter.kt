@@ -9,7 +9,9 @@ import app.netlify.accessdeniedgc.classko.databinding.ScheduleItemBinding
 import app.netlify.accessdeniedgc.classko.database.Schedule
 import app.netlify.accessdeniedgc.classko.util.formatTime
 
-class ScheduleAdapter : ListAdapter<Schedule, ScheduleAdapter.ViewHolder>(ScheduleDiffCallback()) {
+class ScheduleAdapter(
+    private val onClick: (Schedule) -> Unit
+) : ListAdapter<Schedule, ScheduleAdapter.ViewHolder>(ScheduleDiffCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -18,18 +20,22 @@ class ScheduleAdapter : ListAdapter<Schedule, ScheduleAdapter.ViewHolder>(Schedu
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, onClick)
     }
 
     class ViewHolder(
         private val scheduleItemBinding: ScheduleItemBinding
     ) : RecyclerView.ViewHolder(scheduleItemBinding.root) {
 
-        fun bind(item: Schedule) {
+        fun bind(item: Schedule, onClick: (Schedule) -> Unit) {
             scheduleItemBinding.apply {
                 subjectName.text = item.subjectName
                 timeText.text = formatTime(item.timeHour, item.timeMinute)
                 daysText.text = item.getDays()
+
+                root.setOnClickListener {
+                    onClick(item)
+                }
             }
         }
 

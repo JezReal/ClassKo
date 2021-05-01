@@ -62,7 +62,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
         android:text="Day/s"
-        app:layout_constraintBottom_toTopOf="@+id/add_schedule_button"
+        app:layout_constraintBottom_toTopOf="@+id/done_button"
         app:layout_constraintEnd_toEndOf="@+id/start_time_input_button"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/start_time_input_button"
@@ -71,6 +71,7 @@
 
 
     <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flex_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
@@ -78,7 +79,7 @@
         app:flexDirection="row"
         app:flexWrap="wrap"
         app:justifyContent="flex_start"
-        app:layout_constraintBottom_toTopOf="@id/add_schedule_button"
+        app:layout_constraintBottom_toTopOf="@id/done_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/day_label"
@@ -129,12 +130,12 @@
     </com.google.android.flexbox.FlexboxLayout>
 
     <Button
-        android:id="@+id/add_schedule_button"
+        android:id="@+id/done_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Add"
+        android:text="Done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -142,4 +143,19 @@
         app:layout_constraintTop_toBottomOf="@+id/start_time_input_button"
         app:layout_constraintVertical_bias="1" />
 
+    <Button
+        android:id="@+id/delete_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:text="Delete"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/done_button"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flex_layout"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>
