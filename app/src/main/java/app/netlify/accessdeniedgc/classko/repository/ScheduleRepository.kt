@@ -36,4 +36,20 @@ class ScheduleRepository @Inject constructor(
     }
 
     val schedules = dao.getSchedules()
+
+    suspend fun getSchedule(id: Long): ScheduleDB {
+        return dao.getSchedule(id)
+    }
+
+    suspend fun updateSchedule(schedule: ScheduleDB) {
+        dao.update(schedule)
+    }
+
+    suspend fun deleteSchedule(schedule: ScheduleDB) {
+        dao.delete(schedule)
+    }
+
+    suspend fun clearDatabase() {
+        dao.clear()
+    }
 }

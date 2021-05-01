@@ -1,10 +1,7 @@
 package app.netlify.accessdeniedgc.classko.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 @Dao
 interface ScheduleDao {
@@ -15,7 +12,13 @@ interface ScheduleDao {
     @Update
     fun update(schedule: Schedule)
 
-    @Query("SELECT * FROM schedule_table ORDER BY scheduleId DESC")
+    @Delete
+    fun delete(schedule: Schedule)
+
+    @Query("SELECT * FROM schedule_table WHERE scheduleId = :id")
+    fun getSchedule(id: Long): Schedule
+
+    @Query("SELECT * FROM schedule_table ORDER BY scheduleId ASC")
     fun getSchedules(): LiveData<List<Schedule>>
 
     @Query("DELETE FROM schedule_table")

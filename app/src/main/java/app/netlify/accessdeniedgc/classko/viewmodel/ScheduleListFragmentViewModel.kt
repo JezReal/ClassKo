@@ -1,15 +1,11 @@
 package app.netlify.accessdeniedgc.classko.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import app.netlify.accessdeniedgc.classko.model.Schedule
+import app.netlify.accessdeniedgc.classko.database.Schedule
 import app.netlify.accessdeniedgc.classko.repository.ScheduleRepository
-import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentState.*
-import app.netlify.accessdeniedgc.classko.wrapper.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +15,12 @@ class ScheduleListFragmentViewModel @Inject constructor(
 ) : ViewModel() {
 
     val scheduleList = repository.schedules
+
+    fun clearDatabase() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.clearDatabase()
+        }
+    }
 
     sealed class ScheduleListFragmentState {
         object Empty : ScheduleListFragmentState()
