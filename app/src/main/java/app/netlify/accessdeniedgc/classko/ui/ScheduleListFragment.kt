@@ -1,12 +1,12 @@
 package app.netlify.accessdeniedgc.classko.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import app.netlify.accessdeniedgc.classko.R
 import app.netlify.accessdeniedgc.classko.databinding.FragmentScheduleListBinding
 import app.netlify.accessdeniedgc.classko.recyclerview.ScheduleAdapter
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel
@@ -23,10 +23,12 @@ class ScheduleListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentScheduleListBinding.inflate(inflater)
+        binding = FragmentScheduleListBinding.inflate(inflater, container, false)
 
         setUpListeners()
         observeData()
+
+        setHasOptionsMenu(true)
 
         return binding.root
     }
@@ -38,12 +40,36 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun observeData() {
-        //TODO: add button to clear local database then add edit and delete? functionality
-        val adapter = ScheduleAdapter()
+        val adapter = ScheduleAdapter { schedule ->
+            findNavController().navigate(
+                ScheduleListFragmentDirections.actionScheduleListFragmentToAddScheduleFragment(
+                    schedule.scheduleId
+                )
+            )
+        }
         binding.recyclerView.adapter = adapter
         viewModel.scheduleList.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.submitList(it)
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.overflow_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.clear_database -> {
+                viewModel.clearDatabase()
+                true
+            }
+            else -> {
+                NavigationUI.onNavDestinationSelected(
+                    item,
+                    findNavController()
+                ) || super.onOptionsItemSelected(item)
             }
         }
     }
