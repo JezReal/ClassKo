@@ -27,6 +27,35 @@ data class Schedule(
     val sunday: Boolean,
 
     ) {
+
+    constructor(
+        subjectName: String,
+
+        timeHour: Int,
+
+        timeMinute: Int,
+
+        monday: Boolean,
+        tuesday: Boolean,
+        wednesday: Boolean,
+        thursday: Boolean,
+        friday: Boolean,
+        saturday: Boolean,
+        sunday: Boolean,
+    ) : this(
+        0,
+        subjectName,
+        timeHour,
+        timeMinute,
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        sunday
+    )
+
     fun getDays(): String {
         var days = ""
 
