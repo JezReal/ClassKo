@@ -16,4 +16,11 @@
     <style name="Theme.ClassKo.Login" parent="Theme.AppCompat.DayNight.NoActionBar">
 
     </style>
+    
+    <style name="SplashScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">
+            @drawable/splash_image
+        </item>
+        <item name="android:statusBarColor">@color/purple_500</item>
+    </style>
 </resources>
