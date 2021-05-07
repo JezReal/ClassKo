@@ -25,8 +25,7 @@ data class Schedule(
     val friday: Boolean,
     val saturday: Boolean,
     val sunday: Boolean,
-
-    ) {
+) {
 
     constructor(
         subjectName: String,
