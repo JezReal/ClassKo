@@ -9,7 +9,6 @@ import app.netlify.accessdeniedgc.classko.repository.ScheduleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,35 +16,33 @@ class AddScheduleViewModel @Inject constructor(
     private val repository: ScheduleRepository
 ) : ViewModel() {
 
-    private var scheduleLiveData: LiveData<Schedule>? = null
-
-    fun addSchedule(schedule: Schedule) {
+    fun addSchedule(schedule: Schedule, setupNotification: (Long) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (schedule.scheduleId > 0) {
-                Timber.d("Existing sched")
+            var id: Long = -1
+
+            id = if (schedule.scheduleId > 0) {
                 update(schedule)
+                schedule.scheduleId
             } else {
-                Timber.d("New schedule")
                 insert(schedule)
             }
+
+            setupNotification(id)
         }
     }
 
     fun get(id: Long): LiveData<Schedule> {
-        return scheduleLiveData
-            ?: liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
-                emit(repository.getSchedule(id))
-            }.also {
-                scheduleLiveData = it
-            }
+        return liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
+            emit(repository.getSchedule(id))
+        }
     }
 
     private suspend fun update(schedule: Schedule) {
         repository.updateSchedule(schedule)
     }
 
-    private suspend fun insert(schedule: Schedule) {
-        repository.insertSchedule(schedule)
+    private suspend fun insert(schedule: Schedule): Long {
+        return repository.insertSchedule(schedule)
     }
 
     fun deleteSchedule(schedule: Schedule) {
