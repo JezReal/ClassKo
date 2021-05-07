@@ -4,15 +4,14 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import app.netlify.accessdeniedgc.classko.R
 import app.netlify.accessdeniedgc.classko.databinding.ActivityMainBinding
+import app.netlify.accessdeniedgc.classko.util.Notifier
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    //TODO: add notification functionality
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -24,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Notifier.init(this)
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -34,7 +35,4 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
-
-
 }
