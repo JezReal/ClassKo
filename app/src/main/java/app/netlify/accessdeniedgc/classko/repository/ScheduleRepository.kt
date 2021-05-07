@@ -14,6 +14,8 @@ class ScheduleRepository @Inject constructor(
     private val dao: ScheduleDao
 ) {
 
+    val schedules = dao.getSchedules()
+
     suspend fun getSchedules(): Resource<List<Schedule>> {
         return try {
             val response = api.getScheduleList()
@@ -31,11 +33,9 @@ class ScheduleRepository @Inject constructor(
         }
     }
 
-    suspend fun insertSchedule(schedule: ScheduleDB) {
-        dao.insert(schedule)
+    suspend fun insertSchedule(schedule: ScheduleDB): Long {
+        return dao.insert(schedule)
     }
-
-    val schedules = dao.getSchedules()
 
     suspend fun getSchedule(id: Long): ScheduleDB {
         return dao.getSchedule(id)
