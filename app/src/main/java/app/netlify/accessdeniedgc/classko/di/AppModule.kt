@@ -38,7 +38,9 @@ class AppModule {
             context,
             ScheduleDatabase::class.java,
             "schedule_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
