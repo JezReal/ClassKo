@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ClassKo</string>
+    <string name="about_fragment_label">About</string>
 </resources>

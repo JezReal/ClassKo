@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/scheduleListFragment"
         android:name="app.netlify.accessdeniedgc.classko.ui.ScheduleListFragment"
-        android:label="fragment_schedule_list"
-        tools:layout="@layout/fragment_schedule_list" >
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_schedule_list">
         <action
             android:id="@+id/action_scheduleListFragment_to_addScheduleFragment"
             app:destination="@id/addScheduleFragment" />
@@ -27,6 +27,6 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="app.netlify.accessdeniedgc.classko.ui.AboutFragment"
-        android:label="fragment_about"
+        android:label="@string/about_fragment_label"
         tools:layout="@layout/fragment_about" />
 </navigation>
