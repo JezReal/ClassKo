@@ -7,16 +7,20 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import app.netlify.accessdeniedgc.classko.R
+import app.netlify.accessdeniedgc.classko.database.Schedule
 import app.netlify.accessdeniedgc.classko.databinding.FragmentScheduleListBinding
 import app.netlify.accessdeniedgc.classko.recyclerview.ScheduleAdapter
+import app.netlify.accessdeniedgc.classko.util.Notifier
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class ScheduleListFragment : Fragment() {
 
     private lateinit var binding: FragmentScheduleListBinding
     private val viewModel: ScheduleListFragmentViewModel by viewModels()
+    private lateinit var scheduleList: List<Schedule>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +56,7 @@ class ScheduleListFragment : Fragment() {
             it?.let {
                 adapter.submitList(it)
             }
+            scheduleList = it
         }
     }
 
@@ -63,6 +68,7 @@ class ScheduleListFragment : Fragment() {
         return when (item.itemId) {
             R.id.clear_database -> {
                 viewModel.clearDatabase()
+                Notifier.cancelAllNotifications(scheduleList, requireContext().applicationContext)
                 true
             }
             else -> {

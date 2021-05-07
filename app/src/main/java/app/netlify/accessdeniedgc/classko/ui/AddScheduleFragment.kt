@@ -10,12 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import app.netlify.accessdeniedgc.classko.database.Schedule
 import app.netlify.accessdeniedgc.classko.databinding.FragmentAddScheduleBinding
+import app.netlify.accessdeniedgc.classko.util.Notifier
 import app.netlify.accessdeniedgc.classko.util.formatTime
 import app.netlify.accessdeniedgc.classko.viewmodel.AddScheduleViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AddScheduleFragment : BottomSheetDialogFragment() {
@@ -112,14 +114,17 @@ class AddScheduleFragment : BottomSheetDialogFragment() {
                 //store time from database to prevent errors when editing a schedule
                 hourDb = scheduleItem.timeHour
                 minuteDb = scheduleItem.timeMinute
-
                 schedule = scheduleItem
             }
 
             binding.deleteButton.isVisible = true
+
             binding.deleteButton.setOnClickListener {
                 viewModel.deleteSchedule(schedule!!)
-
+                Notifier.cancelNotification(
+                    schedule!!.scheduleId,
+                    requireContext().applicationContext
+                )
                 dismiss()
             }
         }
@@ -149,7 +154,6 @@ class AddScheduleFragment : BottomSheetDialogFragment() {
                     try {
                         // if user did not change the time when editing a schedule, this will throw a NPE
                         // and if that happens, we just get the data from the database
-
                         hour = picker.hour
                         minute = picker.minute
                     } catch (e: NullPointerException) {
@@ -168,10 +172,22 @@ class AddScheduleFragment : BottomSheetDialogFragment() {
                         binding.thursdayCheckbox.isChecked,
                         binding.fridayCheckbox.isChecked,
                         binding.saturdayCheckbox.isChecked,
-                        binding.sundayCheckbox.isChecked,
+                        binding.sundayCheckbox.isChecked
                     )
 
-                    viewModel.addSchedule(newSchedule)
+                    viewModel.addSchedule(newSchedule) { id ->
+                        Timber.d("id: $id")
+//                        Notifier.cancelNotification(
+//                            id,
+//                            requireContext().applicationContext
+//                        )
+                        Notifier.scheduleNotification(
+                            newSchedule,
+                            requireContext().applicationContext,
+                            id
+                        )
+                    }
+
                     dismiss()
                 }
             }
