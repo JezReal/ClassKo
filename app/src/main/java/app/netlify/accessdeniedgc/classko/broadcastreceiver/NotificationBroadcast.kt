@@ -3,7 +3,10 @@ package app.netlify.accessdeniedgc.classko.broadcastreceiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Build.ID
+import android.widget.Toast
+import app.netlify.accessdeniedgc.classko.service.NotificationService
 import app.netlify.accessdeniedgc.classko.util.Notifier
 import app.netlify.accessdeniedgc.classko.util.Notifier.FRIDAY
 import app.netlify.accessdeniedgc.classko.util.Notifier.MONDAY
@@ -19,7 +22,7 @@ import java.util.*
 class NotificationBroadcast : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (Intent.ACTION_BOOT_COMPLETED == intent?.action) {
-            //TODO: issue intents to start notifications
+            scheduleNotifications(context)
         } else {
             Timber.d("Broadcast receiver hit")
             if (isNotificationToday(intent)) {
@@ -59,5 +62,15 @@ class NotificationBroadcast : BroadcastReceiver() {
         }
 
         return false
+    }
+
+    private fun scheduleNotifications(context: Context?) {
+        val intent = Intent(context, NotificationService::class.java)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context?.startForegroundService(intent)
+        } else {
+            context?.startService(intent)
+        }
     }
 }
