@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import app.netlify.accessdeniedgc.classko.database.ScheduleDao
 import app.netlify.accessdeniedgc.classko.database.ScheduleDatabase
+import app.netlify.accessdeniedgc.classko.network.ClassKoApi
 import app.netlify.accessdeniedgc.classko.network.ScheduleApi
 import app.netlify.accessdeniedgc.classko.repository.ScheduleRepository
 import dagger.Module
@@ -16,6 +17,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 private const val BASE_URL = "https://evening-crag-20937.herokuapp.com/"
+private const val CLASSKO_API_BASE_URL = "https://classko-backend.herokuapp.com/api/v1/"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -29,6 +31,16 @@ class AppModule {
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(ScheduleApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideClassKoApi(): ClassKoApi {
+        return Retrofit.Builder()
+            .baseUrl(CLASSKO_API_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+            .create(ClassKoApi::class.java)
     }
 
     @Singleton
@@ -49,6 +61,6 @@ class AppModule {
     }
 
     @Provides
-    fun provideScheduleRepository(api: ScheduleApi, dao: ScheduleDao) = ScheduleRepository(api, dao)
+    fun provideScheduleRepository(api: ClassKoApi, dao: ScheduleDao) = ScheduleRepository(api, dao)
 
 }
