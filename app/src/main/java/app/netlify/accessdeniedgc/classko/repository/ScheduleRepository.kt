@@ -1,24 +1,26 @@
 package app.netlify.accessdeniedgc.classko.repository
 
 import app.netlify.accessdeniedgc.classko.database.ScheduleDao
-import app.netlify.accessdeniedgc.classko.model.Schedule
-import app.netlify.accessdeniedgc.classko.network.ScheduleApi
+import app.netlify.accessdeniedgc.classko.network.ClassKoApi
+import app.netlify.accessdeniedgc.classko.network.Schedule
+import app.netlify.accessdeniedgc.classko.network.ScheduleResponse
 import app.netlify.accessdeniedgc.classko.wrapper.Resource
+import timber.log.Timber
 import java.net.UnknownHostException
 import javax.inject.Inject
 import app.netlify.accessdeniedgc.classko.database.Schedule as ScheduleDB
 
 
 class ScheduleRepository @Inject constructor(
-    private val api: ScheduleApi,
+    private val api: ClassKoApi,
     private val dao: ScheduleDao
 ) {
 
     val schedules = dao.getSchedules()
 
-    suspend fun getSchedules(): Resource<List<Schedule>> {
+    suspend fun importSchedule(id: String): Resource<Schedule> {
         return try {
-            val response = api.getScheduleList()
+            val response = api.getSchedule(id)
             val result = response.body()
 
             if (response.isSuccessful && result != null) {
@@ -29,12 +31,35 @@ class ScheduleRepository @Inject constructor(
         } catch (e: UnknownHostException) {
             Resource.Failure("No internet")
         } catch (e: Exception) {
-            Resource.Failure(e.message!!)
+            Resource.Failure(e.localizedMessage!!)
+        }
+    }
+
+
+    suspend fun exportSchedules(schedule: Schedule): Resource<ScheduleResponse> {
+        return try {
+            val response = api.addSchedule(schedule)
+            val result = response.body()
+
+            if (response.isSuccessful && result != null) {
+                Resource.Success(result)
+            } else {
+                Timber.d(response.raw().toString())
+                Resource.Failure(response.message())
+            }
+        } catch (e: UnknownHostException) {
+            Resource.Failure("No internet")
+        } catch (e: Exception) {
+            Resource.Failure(e.localizedMessage!!)
         }
     }
 
     suspend fun insertSchedule(schedule: ScheduleDB): Long {
         return dao.insert(schedule)
+    }
+
+    suspend fun insertAlLSchedules(schedules: List<ScheduleDB>) {
+        dao.insertAll(schedules)
     }
 
     suspend fun getSchedule(id: Long): ScheduleDB {
