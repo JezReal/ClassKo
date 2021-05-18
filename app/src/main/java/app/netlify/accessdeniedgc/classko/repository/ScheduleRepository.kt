@@ -58,10 +58,6 @@ class ScheduleRepository @Inject constructor(
         return dao.insert(schedule)
     }
 
-    suspend fun insertAlLSchedules(schedules: List<ScheduleDB>) {
-        dao.insertAll(schedules)
-    }
-
     suspend fun getSchedule(id: Long): ScheduleDB {
         return dao.getSchedule(id)
     }
