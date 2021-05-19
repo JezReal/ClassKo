@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import app.netlify.accessdeniedgc.classko.R
@@ -16,6 +15,7 @@ import app.netlify.accessdeniedgc.classko.util.Notifier
 import app.netlify.accessdeniedgc.classko.viewmodel.AddScheduleViewModel
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentState.*
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -125,7 +125,30 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun exportSchedules() {
-        viewModel.exportSchedules(scheduleList)
+        if (scheduleList.isEmpty()) {
+            Snackbar.make(binding.root, "Cannot export empty data", Snackbar.LENGTH_SHORT).show()
+        } else {
+            viewModel.exportSchedules(scheduleList)
+        }
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun showExportDialog(responseId: String) {
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle("Success")
+        builder.setMessage("Id is: $responseId")
+        builder.setPositiveButton("Copy to clipboard") { _, _ ->
+            val clipBoard =
+                requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val scheduleId = ClipData.newPlainText("id", responseId)
+            clipBoard.setPrimaryClip(scheduleId)
+
+            Snackbar.make(binding.root, "Copied to clipboard", Snackbar.LENGTH_SHORT).show()
+        }
+        builder.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
