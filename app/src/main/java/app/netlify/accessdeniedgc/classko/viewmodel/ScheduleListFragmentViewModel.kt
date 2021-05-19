@@ -29,7 +29,7 @@ class ScheduleListFragmentViewModel @Inject constructor(
     val scheduleState = _scheduleState.asLiveData()
 
     private val _scheduleEvent = Channel<ScheduleListFragmentEvent>()
-    val scheduleEvent = _scheduleEvent.receiveAsFlow().asLiveData()
+    val scheduleEvent = _scheduleEvent.receiveAsFlow()
 
     val scheduleList = repository.schedules
 
