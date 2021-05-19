@@ -25,8 +25,10 @@ class ScheduleRepository @Inject constructor(
 
             if (response.isSuccessful && result != null) {
                 Resource.Success(result)
+            } else if (response.code() == 404) {
+                Resource.Failure("Schedule not found")
             } else {
-                Resource.Failure(response.message())
+                Resource.Failure("Unexpected error: ${response.code()}")
             }
         } catch (e: UnknownHostException) {
             Resource.Failure("No internet")
