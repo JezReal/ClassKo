@@ -78,6 +78,8 @@ class ScheduleListFragmentViewModel @Inject constructor(
     }
 
     fun importSchedules(id: String) {
+
+        _scheduleState.value = Loading
         viewModelScope.launch(Dispatchers.Default) {
             when (val apiResponse = repository.importSchedule(id)) {
                 is Resource.Success -> {
