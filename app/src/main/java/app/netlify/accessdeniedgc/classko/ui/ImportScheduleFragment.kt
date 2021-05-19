@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import app.netlify.accessdeniedgc.classko.databinding.DialogImportScheduleBinding
+import app.netlify.accessdeniedgc.classko.databinding.FragmentImportScheduleBinding
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class ImportScheduleDialog: BottomSheetDialogFragment() {
+class ImportScheduleFragment: BottomSheetDialogFragment() {
 
-    private lateinit var binding: DialogImportScheduleBinding
+    private lateinit var binding: FragmentImportScheduleBinding
     private val viewModel: ScheduleListFragmentViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -19,7 +19,7 @@ class ImportScheduleDialog: BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogImportScheduleBinding.inflate(inflater, container, false)
+        binding = FragmentImportScheduleBinding.inflate(inflater, container, false)
 
         setListeners()
 
