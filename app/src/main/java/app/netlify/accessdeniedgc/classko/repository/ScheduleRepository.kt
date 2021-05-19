@@ -44,7 +44,6 @@ class ScheduleRepository @Inject constructor(
             if (response.isSuccessful && result != null) {
                 Resource.Success(result)
             } else {
-                Timber.d(response.raw().toString())
                 Resource.Failure(response.message())
             }
         } catch (e: UnknownHostException) {
