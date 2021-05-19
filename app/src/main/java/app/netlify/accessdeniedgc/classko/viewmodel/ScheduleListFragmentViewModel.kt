@@ -7,11 +7,14 @@ import app.netlify.accessdeniedgc.classko.network.Schedule
 import app.netlify.accessdeniedgc.classko.network.ScheduleItem
 import app.netlify.accessdeniedgc.classko.network.ScheduleResponse
 import app.netlify.accessdeniedgc.classko.repository.ScheduleRepository
+import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentEvent.ShowSnackBar
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentState.*
 import app.netlify.accessdeniedgc.classko.wrapper.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import app.netlify.accessdeniedgc.classko.database.Schedule as ScheduleDB
@@ -24,6 +27,9 @@ class ScheduleListFragmentViewModel @Inject constructor(
     private val _scheduleState =
         MutableStateFlow<ScheduleListFragmentState>(Empty)
     val scheduleState = _scheduleState.asLiveData()
+
+    private val _scheduleEvent = Channel<ScheduleListFragmentEvent>()
+    val scheduleEvent = _scheduleEvent.receiveAsFlow().asLiveData()
 
     val scheduleList = repository.schedules
 
@@ -84,6 +90,12 @@ class ScheduleListFragmentViewModel @Inject constructor(
         }
     }
 
+    fun showSnackBar(message: String) {
+        viewModelScope.launch {
+            _scheduleEvent.send(ShowSnackBar(message))
+        }
+    }
+
     sealed class ScheduleListFragmentState {
         object Empty : ScheduleListFragmentState()
         object Loading : ScheduleListFragmentState()
@@ -91,9 +103,9 @@ class ScheduleListFragmentViewModel @Inject constructor(
         class ExportFailure(val message: String) : ScheduleListFragmentState()
         class ImportSuccess(val response: Schedule) : ScheduleListFragmentState()
         class ImportFailure(val message: String) : ScheduleListFragmentState()
-        class Failure(val message: String) : ScheduleListFragmentState()
     }
 
     sealed class ScheduleListFragmentEvent {
+        class ShowSnackBar(val message: String) : ScheduleListFragmentEvent()
     }
 }

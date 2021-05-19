@@ -1,6 +1,9 @@
 package app.netlify.accessdeniedgc.classko.ui
 
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -14,10 +17,10 @@ import app.netlify.accessdeniedgc.classko.recyclerview.ScheduleAdapter
 import app.netlify.accessdeniedgc.classko.util.Notifier
 import app.netlify.accessdeniedgc.classko.viewmodel.AddScheduleViewModel
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel
+import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentEvent.ShowSnackBar
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentState.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -38,6 +41,7 @@ class ScheduleListFragment : Fragment() {
         setUpListeners()
         observeData()
         observeState()
+        observeEvents()
 
         setHasOptionsMenu(true)
 
@@ -71,29 +75,32 @@ class ScheduleListFragment : Fragment() {
         viewModel.scheduleState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is Loading -> {
-                    val builder = AlertDialog.Builder(requireActivity())
-                    builder.setView(R.layout.dialog_loading)
-                        .create()
-                        .show()
+                    viewModel.showSnackBar("Loading...")
                 }
                 is ExportSuccess -> {
-                    val builder = AlertDialog.Builder(requireActivity())
-                    builder.setView(R.layout.dialog_export_success)
-                        .create()
-                        .show()
-                    Timber.d("export success")
+                    showExportDialog(state.response.id)
                 }
                 is ExportFailure -> {
-                    Timber.d("export failed: ${state.message}")
+                    viewModel.showSnackBar(state.message)
                 }
                 is ImportSuccess -> {
                     addSchedulesToDatabase(state.response)
                 }
                 is ImportFailure -> {
-                    Timber.d("import failed: ${state.message}")
+                    viewModel.showSnackBar(state.message)
                 }
                 else -> {
 
+                }
+            }
+        }
+    }
+
+    private fun observeEvents() {
+        viewModel.scheduleEvent.observe(viewLifecycleOwner) { event ->
+            when (event) {
+                is ShowSnackBar -> {
+                    showSnackBar(event.message)
                 }
             }
         }
