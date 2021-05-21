@@ -114,7 +114,8 @@ object Notifier {
         val intent = Intent(context, NotificationBroadcast::class.java)
 
         for (schedule in schedules) {
-            val pendingIntent = PendingIntent.getBroadcast(context, schedule.scheduleId.toInt(), intent, 0)
+            val pendingIntent =
+                PendingIntent.getBroadcast(context, schedule.scheduleId.toInt(), intent, 0)
 
             alarmManager.cancel(pendingIntent)
         }

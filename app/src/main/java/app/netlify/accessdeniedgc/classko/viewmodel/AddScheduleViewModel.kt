@@ -18,9 +18,8 @@ class AddScheduleViewModel @Inject constructor(
 
     fun addSchedule(schedule: Schedule, setupNotification: (Long) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            var id: Long = -1
 
-            id = if (schedule.scheduleId > 0) {
+            val id: Long = if (schedule.scheduleId > 0) {
                 update(schedule)
                 schedule.scheduleId
             } else {

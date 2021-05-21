@@ -24,8 +24,8 @@ class NotificationBroadcast : BroadcastReceiver() {
         if (Intent.ACTION_BOOT_COMPLETED == intent?.action) {
             scheduleNotifications(context)
         } else {
-            Timber.d("Broadcast receiver hit")
             if (isNotificationToday(intent)) {
+
                 val id = intent?.getLongExtra(ID, -1)
                 val subjectName = intent?.getStringExtra(SUBJECT_NAME) ?: "Subject name"
 
@@ -34,30 +34,46 @@ class NotificationBroadcast : BroadcastReceiver() {
         }
     }
 
+
     private fun isNotificationToday(intent: Intent?): Boolean {
         val calendar = Calendar.getInstance()
+        Timber.d("Current day is: ${calendar.get(Calendar.DAY_OF_WEEK)}")
 
         when (calendar.get(Calendar.DAY_OF_WEEK)) {
-            Calendar.SUNDAY -> {
-                return intent?.getBooleanExtra(SUNDAY, false) == true
-            }
             Calendar.MONDAY -> {
-                return intent?.getBooleanExtra(MONDAY, false) == true
+                val day = intent?.getBooleanExtra(MONDAY, false)
+//                Timber.d("Monday: $day")
+                return day == true
             }
             Calendar.TUESDAY -> {
-                return intent?.getBooleanExtra(TUESDAY, false) == true
+                val day = intent?.getBooleanExtra(TUESDAY, false)
+//                Timber.d("Tuesday: $day")
+                return day == true
             }
             Calendar.WEDNESDAY -> {
-                return intent?.getBooleanExtra(WEDNESDAY, false) == true
+                val day = intent?.getBooleanExtra(WEDNESDAY, false)
+//                Timber.d("Wednesday: $day")
+                return day == true
             }
             Calendar.THURSDAY -> {
-                return intent?.getBooleanExtra(THURSDAY, false) == true
+                val day = intent?.getBooleanExtra(THURSDAY, false)
+//                Timber.d("Thursday: $day")
+                return day == true
             }
             Calendar.FRIDAY -> {
-                return intent?.getBooleanExtra(FRIDAY, false) == true
+                val day = intent?.getBooleanExtra(FRIDAY, false)
+//                Timber.d("Friday: $day")
+                return day == true
             }
             Calendar.SATURDAY -> {
-                return intent?.getBooleanExtra(SATURDAY, false) == true
+                val day = intent?.getBooleanExtra(SATURDAY, false)
+//                Timber.d("Saturday: $day")
+                return day == true
+            }
+            Calendar.SUNDAY -> {
+                val day = intent?.getBooleanExtra(SUNDAY, false)
+//                Timber.d("Sunday: $day")
+                return day == true
             }
         }
 
