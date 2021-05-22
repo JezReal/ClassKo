@@ -24,6 +24,7 @@ class NotificationBroadcast : BroadcastReceiver() {
         if (Intent.ACTION_BOOT_COMPLETED == intent?.action) {
             scheduleNotifications(context)
         } else {
+           
             if (isNotificationToday(intent)) {
 
                 val id = intent?.getLongExtra(ID, -1)
