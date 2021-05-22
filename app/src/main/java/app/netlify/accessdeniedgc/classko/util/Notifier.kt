@@ -78,7 +78,7 @@ object Notifier {
         intent.putExtra(SUBJECT_NAME, schedule.subjectName)
         intent.putExtra(ID, id)
 
-        val pendingIntent = PendingIntent.getBroadcast(context, id.toInt(), intent, 0)
+        var pendingIntent = PendingIntent.getBroadcast(context, id.toInt(), intent, 0)
 
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()
@@ -91,6 +91,11 @@ object Notifier {
         if (calendar.timeInMillis <= System.currentTimeMillis()) {
             calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH] + 1
         }
+
+
+        alarmManager.cancel(pendingIntent)
+        pendingIntent.cancel()
+        pendingIntent = PendingIntent.getBroadcast(context, id.toInt(), intent, 0)
 
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,

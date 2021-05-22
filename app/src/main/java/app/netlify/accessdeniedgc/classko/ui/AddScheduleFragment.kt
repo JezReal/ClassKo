@@ -79,7 +79,7 @@ class AddScheduleFragment : BottomSheetDialogFragment() {
 
         if (currentState == CurrentState.EXISTING_SCHEDULE) {
             viewModel.get(args.scheduleId).observe(viewLifecycleOwner) { scheduleItem ->
-                binding.subjectInput.isEnabled = false
+
                 binding.subjectInput.setText(scheduleItem.subjectName)
                 binding.startTimeDisplay.text =
                     formatTime(scheduleItem.timeHour, scheduleItem.timeMinute)
@@ -89,14 +89,6 @@ class AddScheduleFragment : BottomSheetDialogFragment() {
                     startTimeDisplay.text =
                         formatTime(scheduleItem.timeHour, scheduleItem.timeMinute)
 
-                    mondayCheckbox.isEnabled = false
-                    tuesdayCheckbox.isEnabled = false
-                    wednesdayCheckbox.isEnabled = false
-                    thursdayCheckbox.isEnabled = false
-                    fridayCheckbox.isEnabled = false
-                    saturdayCheckbox.isEnabled = false
-                    sundayCheckbox.isEnabled = false
-                    
                     if (scheduleItem.monday) {
                         mondayCheckbox.isChecked = true
                     }
