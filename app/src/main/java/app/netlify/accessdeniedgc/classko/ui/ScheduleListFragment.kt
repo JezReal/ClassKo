@@ -144,7 +144,7 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun showSnackBar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
     private fun showExportDialog(responseId: String) {
