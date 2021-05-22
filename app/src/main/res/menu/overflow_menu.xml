@@ -12,9 +12,4 @@
     <item
         android:id="@+id/clear_database"
         android:title="Delete all schedules" />
-
-    <item
-        android:enabled="false"
-        android:id="@+id/aboutFragment"
-        android:title="About" />
 </menu>
