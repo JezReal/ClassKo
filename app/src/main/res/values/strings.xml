@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">ClassKo</string>
     <string name="about_fragment_label">About</string>
+    <string name="days_input_text">Day/s</string>
+    <string name="days_input_monday">Monday</string>
+    <string name="days_input_tuesday">Tuesday</string>
+    <string name="days_input_wednesday">Wednesday</string>
+    <string name="days_input_thursday">Thursday</string>
+    <string name="days_input_friday">Friday</string>
+    <string name="days_input_saturday">Saturday</string>
+    <string name="days_input_sunday">Sunday</string>
+    <string name="done_button_text">Done</string>
+    <string name="delete_button_text">Delete</string>
+    <string name="subject_name_input_hint">Subject name</string>
+    <string name="start_time_input_text">Start time</string>
+    <string name="enter_id_hint_text">Enter id</string>
+    <string name="import_text">Import</string>
+    <string name="add_new_schedule_content_description">Add new schedule</string>
 </resources>
