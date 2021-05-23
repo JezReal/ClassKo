@@ -16,4 +16,7 @@
     <string name="enter_id_hint_text">Enter id</string>
     <string name="import_text">Import</string>
     <string name="add_new_schedule_content_description">Add new schedule</string>
+    <string name="import_schedules_text">Import</string>
+    <string name="share_schedules_text">Share schedules</string>
+    <string name="delete_all_schedules_text">Delete all schedules</string>
 </resources>
