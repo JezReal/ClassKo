@@ -76,8 +76,8 @@ class ScheduleListFragment : Fragment() {
                 it?.let {
                     adapter.submitList(it)
                 }
-                scheduleList = it
             }
+            scheduleList = it
         }
     }
 
