@@ -6,6 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -66,10 +67,17 @@ class ScheduleListFragment : Fragment() {
         }
         binding.recyclerView.adapter = adapter
         viewModel.scheduleList.observe(viewLifecycleOwner) {
-            it?.let {
-                adapter.submitList(it)
+            if (it.isEmpty()) {
+                binding.recyclerView.isVisible = false
+                binding.guideText.isVisible = true
+            } else {
+                binding.recyclerView.isVisible = true
+                binding.guideText.isVisible = false
+                it?.let {
+                    adapter.submitList(it)
+                }
+                scheduleList = it
             }
-            scheduleList = it
         }
     }
 
