@@ -28,7 +28,7 @@ class ScheduleListFragmentViewModel @Inject constructor(
         MutableStateFlow<ScheduleListFragmentState>(Empty)
     val scheduleState = _scheduleState.asLiveData()
 
-    private val _scheduleEvent = Channel<ScheduleListFragmentEvent>()
+    private val _scheduleEvent = Channel<ScheduleListFragmentEvent>(Channel.BUFFERED)
     val scheduleEvent = _scheduleEvent.receiveAsFlow()
 
     val scheduleList = repository.schedules
@@ -66,12 +66,10 @@ class ScheduleListFragmentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             when (val apiResponse = repository.exportSchedules(schedule)) {
                 is Resource.Success -> {
-                    _scheduleState.value =
-                        ExportSuccess(apiResponse.data!!)
+                    _scheduleEvent.send(ExportSuccess(apiResponse.data!!))
                 }
                 is Resource.Failure -> {
-                    _scheduleState.value =
-                        ExportFailure(apiResponse.message!!)
+                    _scheduleEvent.send(ExportFailure(apiResponse.message!!))
                 }
             }
         }
@@ -83,10 +81,10 @@ class ScheduleListFragmentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             when (val apiResponse = repository.importSchedule(id)) {
                 is Resource.Success -> {
-                    _scheduleState.value = ImportSuccess(apiResponse.data!!)
+                    _scheduleEvent.send(ImportSuccess(apiResponse.data!!))
                 }
                 is Resource.Failure -> {
-                    _scheduleState.value = ImportFailure(apiResponse.message!!)
+                    _scheduleEvent.send(ImportFailure(apiResponse.message!!))
                 }
             }
         }
@@ -95,6 +93,18 @@ class ScheduleListFragmentViewModel @Inject constructor(
     fun showSnackBar(message: String) {
         viewModelScope.launch {
             _scheduleEvent.send(ShowSnackBar(message))
+        }
+    }
+
+    fun showExportDialog(id: String) {
+        viewModelScope.launch {
+            _scheduleEvent.send(ShowExportDialog(id))
+        }
+    }
+
+    fun addSchedulesToDatabase(schedule: Schedule) {
+        viewModelScope.launch {
+            _scheduleEvent.send(AddSchedulesToDatabase(schedule))
         }
     }
 
@@ -109,5 +119,11 @@ class ScheduleListFragmentViewModel @Inject constructor(
 
     sealed class ScheduleListFragmentEvent {
         class ShowSnackBar(val message: String) : ScheduleListFragmentEvent()
+        class ShowExportDialog(val id: String) : ScheduleListFragmentEvent()
+        class AddSchedulesToDatabase(val schedule: Schedule) : ScheduleListFragmentEvent()
+        class ExportSuccess(val response: ScheduleResponse) : ScheduleListFragmentEvent()
+        class ExportFailure(val message: String) : ScheduleListFragmentEvent()
+        class ImportSuccess(val response: Schedule) : ScheduleListFragmentEvent()
+        class ImportFailure(val message: String) : ScheduleListFragmentEvent()
     }
 }

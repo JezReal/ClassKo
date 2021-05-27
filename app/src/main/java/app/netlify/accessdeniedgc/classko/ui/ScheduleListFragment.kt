@@ -19,11 +19,14 @@ import app.netlify.accessdeniedgc.classko.recyclerview.ScheduleAdapter
 import app.netlify.accessdeniedgc.classko.util.Notifier
 import app.netlify.accessdeniedgc.classko.viewmodel.AddScheduleViewModel
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel
-import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentEvent.ShowSnackBar
+import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentEvent.*
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentState.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 
 @AndroidEntryPoint
@@ -33,6 +36,7 @@ class ScheduleListFragment : Fragment() {
     private val viewModel: ScheduleListFragmentViewModel by activityViewModels()
     private val addScheduleViewModel: AddScheduleViewModel by activityViewModels()
     private lateinit var scheduleList: List<Schedule>
+    private lateinit var job: Job
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +53,43 @@ class ScheduleListFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        job = viewModel.scheduleEvent
+            .onEach { event ->
+                when (event) {
+                    is ShowSnackBar -> {
+                        showSnackBar(event.message)
+                    }
+                    is ShowExportDialog -> {
+                        showExportDialog(event.id)
+                    }
+                    is AddSchedulesToDatabase -> {
+                        addSchedulesToDatabase(event.schedule)
+                    }
+                    is ExportSuccess -> {
+                        viewModel.showExportDialog(event.response.id)
+                    }
+                    is ExportFailure -> {
+                        viewModel.showSnackBar(event.message)
+                    }
+                    is ImportSuccess -> {
+                        viewModel.addSchedulesToDatabase(event.response)
+                    }
+                    is ImportFailure -> {
+                        viewModel.showSnackBar(event.message)
+                    }
+                }
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        job.cancel()
     }
 
     private fun setUpListeners() {
@@ -87,18 +128,6 @@ class ScheduleListFragment : Fragment() {
                 is Loading -> {
                     viewModel.showSnackBar("Loading...")
                 }
-                is ExportSuccess -> {
-                    showExportDialog(state.response.id)
-                }
-                is ExportFailure -> {
-                    viewModel.showSnackBar(state.message)
-                }
-                is ImportSuccess -> {
-                    addSchedulesToDatabase(state.response)
-                }
-                is ImportFailure -> {
-                    viewModel.showSnackBar(state.message)
-                }
                 else -> {
 
                 }
@@ -107,15 +136,7 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun observeEvents() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.scheduleEvent.collect { event ->
-                when (event) {
-                    is ShowSnackBar -> {
-                        showSnackBar(event.message)
-                    }
-                }
-            }
-        }
+
     }
 
     private fun addSchedulesToDatabase(schedule: app.netlify.accessdeniedgc.classko.network.Schedule) {
