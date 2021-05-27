@@ -40,7 +40,10 @@ class ScheduleListFragmentViewModel @Inject constructor(
     }
 
     fun exportSchedules(scheduleDB: List<ScheduleDB>) {
-        _scheduleState.value = Loading
+        viewModelScope.launch {
+            _scheduleEvent.send(ShowSnackBar("Loading..."))
+        }
+
 
         val scheduleItems = ArrayList<ScheduleItem>()
 
@@ -77,7 +80,10 @@ class ScheduleListFragmentViewModel @Inject constructor(
 
     fun importSchedules(id: String) {
 
-        _scheduleState.value = Loading
+        viewModelScope.launch {
+            _scheduleEvent.send(ShowSnackBar("Loading..."))
+        }
+
         viewModelScope.launch(Dispatchers.Default) {
             when (val apiResponse = repository.importSchedule(id)) {
                 is Resource.Success -> {
@@ -110,7 +116,7 @@ class ScheduleListFragmentViewModel @Inject constructor(
 
     sealed class ScheduleListFragmentState {
         object Empty : ScheduleListFragmentState()
-        object Loading : ScheduleListFragmentState()
+//        object Loading : ScheduleListFragmentEvent()
     }
 
     sealed class ScheduleListFragmentEvent {

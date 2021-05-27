@@ -125,16 +125,16 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun observeState() {
-        viewModel.scheduleState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is Loading -> {
-                    viewModel.showSnackBar("Loading...")
-                }
-                else -> {
-
-                }
-            }
-        }
+//        viewModel.scheduleState.observe(viewLifecycleOwner) { state ->
+//            when (state) {
+//                is Loading -> {
+//                    viewModel.showSnackBar("Loading...")
+//                }
+//                else -> {
+//
+//                }
+//            }
+//        }
     }
 
     private fun observeEvents() {
