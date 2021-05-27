@@ -7,7 +7,7 @@ import app.netlify.accessdeniedgc.classko.network.Schedule
 import app.netlify.accessdeniedgc.classko.network.ScheduleItem
 import app.netlify.accessdeniedgc.classko.network.ScheduleResponse
 import app.netlify.accessdeniedgc.classko.repository.ScheduleRepository
-import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentEvent.ShowSnackBar
+import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentEvent.*
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentState.*
 import app.netlify.accessdeniedgc.classko.wrapper.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -111,10 +111,6 @@ class ScheduleListFragmentViewModel @Inject constructor(
     sealed class ScheduleListFragmentState {
         object Empty : ScheduleListFragmentState()
         object Loading : ScheduleListFragmentState()
-        class ExportSuccess(val response: ScheduleResponse) : ScheduleListFragmentState()
-        class ExportFailure(val message: String) : ScheduleListFragmentState()
-        class ImportSuccess(val response: Schedule) : ScheduleListFragmentState()
-        class ImportFailure(val message: String) : ScheduleListFragmentState()
     }
 
     sealed class ScheduleListFragmentEvent {
