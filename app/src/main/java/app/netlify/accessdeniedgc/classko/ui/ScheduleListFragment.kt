@@ -106,18 +106,20 @@ class ScheduleListFragment : Fragment() {
                 )
             )
         }
+
         binding.recyclerView.adapter = adapter
         viewModel.scheduleList.observe(viewLifecycleOwner) {
+            it?.let {
+                adapter.submitList(it)
+            }
+
             if (it.isEmpty()) {
-                binding.recyclerView.isVisible = false
                 binding.guideText.isVisible = true
             } else {
                 binding.recyclerView.isVisible = true
                 binding.guideText.isVisible = false
-                it?.let {
-                    adapter.submitList(it)
-                }
             }
+
             scheduleList = it
         }
     }
