@@ -5,8 +5,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Schedule(
-    @Json(name = "type")
-    val type: String?,
     @Json(name = "scheduleItems")
     val scheduleItems: List<ScheduleItem>
 )

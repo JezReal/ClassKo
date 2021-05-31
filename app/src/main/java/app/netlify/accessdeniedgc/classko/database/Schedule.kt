@@ -9,11 +9,11 @@ data class Schedule(
     @PrimaryKey(autoGenerate = true)
     val scheduleId: Long,
 
-    @ColumnInfo(name = "type")
-    val type: String?,
-
     @ColumnInfo(name = "subject_name")
     val subjectName: String,
+
+    @ColumnInfo(name = "type")
+    val type: String?,
 
     @ColumnInfo(name = "time_hour")
     val timeHour: Int,
@@ -33,6 +33,8 @@ data class Schedule(
     constructor(
         subjectName: String,
 
+        type: String?,
+
         timeHour: Int,
 
         timeMinute: Int,
@@ -46,8 +48,8 @@ data class Schedule(
         sunday: Boolean,
     ) : this(
         0,
-        null,
         subjectName,
+        type,
         timeHour,
         timeMinute,
         monday,

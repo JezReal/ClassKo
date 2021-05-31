@@ -7,6 +7,8 @@ import com.squareup.moshi.JsonClass
 data class ScheduleItem(
     @Json(name = "subjectName")
     val subjectName: String,
+    @Json(name = "type")
+    val type: String?,
     @Json(name = "timeHour")
     val timeHour: Int,
     @Json(name = "timeMinute")
