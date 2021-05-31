@@ -125,16 +125,7 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun observeState() {
-//        viewModel.scheduleState.observe(viewLifecycleOwner) { state ->
-//            when (state) {
-//                is Loading -> {
-//                    viewModel.showSnackBar("Loading...")
-//                }
-//                else -> {
-//
-//                }
-//            }
-//        }
+
     }
 
     private fun observeEvents() {
@@ -199,6 +190,11 @@ class ScheduleListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.get_class_schedules -> {
+                viewModel.getClassSchedules()
+                true
+            }
+
             R.id.clear_database -> {
                 viewModel.clearDatabase()
                 Notifier.cancelAllNotifications(scheduleList, requireContext().applicationContext)
