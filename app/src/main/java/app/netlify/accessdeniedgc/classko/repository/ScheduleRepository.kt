@@ -16,6 +16,7 @@ class ScheduleRepository @Inject constructor(
 ) {
 
     val schedules = dao.getSchedules()
+    val userSchedules = dao.getUserSchedules()
 
     suspend fun importSchedule(token: String, id: String): Resource<Schedule> {
         return try {

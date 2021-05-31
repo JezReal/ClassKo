@@ -33,6 +33,8 @@ class ScheduleListFragmentViewModel @Inject constructor(
 
     val scheduleList = repository.schedules
 
+    val userSchedules = repository.userSchedules
+
     fun clearDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.clearDatabase()
@@ -48,21 +50,23 @@ class ScheduleListFragmentViewModel @Inject constructor(
         val scheduleItems = ArrayList<ScheduleItem>()
 
         scheduleDB.map {
-            scheduleItems.add(
-                ScheduleItem(
-                    it.subjectName,
-                    it.type,
-                    it.timeHour,
-                    it.timeMinute,
-                    it.monday,
-                    it.tuesday,
-                    it.wednesday,
-                    it.thursday,
-                    it.friday,
-                    it.saturday,
-                    it.sunday
+            if (it.type == null) {
+                scheduleItems.add(
+                    ScheduleItem(
+                        it.subjectName,
+                        it.type,
+                        it.timeHour,
+                        it.timeMinute,
+                        it.monday,
+                        it.tuesday,
+                        it.wednesday,
+                        it.thursday,
+                        it.friday,
+                        it.saturday,
+                        it.sunday
+                    )
                 )
-            )
+            }
         }
 
         val schedule = Schedule(scheduleItems)

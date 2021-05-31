@@ -27,4 +27,7 @@ interface ScheduleDao {
 
     @Query("DELETE FROM schedule_table WHERE type is NOT NULL")
     fun deleteClassSchedules()
+
+    @Query("SELECT * FROM schedule_table WHERE type is NULL")
+    fun getUserSchedules(): LiveData<List<Schedule>>
 }

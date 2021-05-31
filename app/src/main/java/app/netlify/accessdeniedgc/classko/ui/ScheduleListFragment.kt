@@ -39,6 +39,7 @@ class ScheduleListFragment : Fragment() {
     private val viewModel: ScheduleListFragmentViewModel by activityViewModels()
     private val addScheduleViewModel: AddScheduleViewModel by activityViewModels()
     private lateinit var scheduleList: List<Schedule>
+    private lateinit var userSchedules: List<Schedule>
     private lateinit var job: Job
 
     @Inject
@@ -141,6 +142,10 @@ class ScheduleListFragment : Fragment() {
 
             scheduleList = it
         }
+
+        viewModel.userSchedules.observe(viewLifecycleOwner) {
+            userSchedules = it
+        }
     }
 
     private fun observeState() {
@@ -178,7 +183,7 @@ class ScheduleListFragment : Fragment() {
     }
 
     private fun exportSchedules(token: String) {
-        if (scheduleList.isEmpty()) {
+        if (userSchedules.isEmpty()) {
             Snackbar.make(binding.root, "Cannot export empty data", Snackbar.LENGTH_SHORT).show()
         } else {
             viewModel.exportSchedules(token, scheduleList)
@@ -283,7 +288,11 @@ class ScheduleListFragment : Fragment() {
         lifecycleScope.launch(Dispatchers.IO) {
             dataStore.storeToken("")
         }
-        Snackbar.make(binding.root, "You have been logged out. Sharing is now disabled", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(
+            binding.root,
+            "You have been logged out. Sharing is now disabled",
+            Snackbar.LENGTH_LONG
+        ).show()
         isUserLoggedIn = false
     }
 
