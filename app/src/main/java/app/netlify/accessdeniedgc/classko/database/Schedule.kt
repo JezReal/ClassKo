@@ -9,6 +9,9 @@ data class Schedule(
     @PrimaryKey(autoGenerate = true)
     val scheduleId: Long,
 
+    @ColumnInfo(name = "type")
+    val type: String?,
+
     @ColumnInfo(name = "subject_name")
     val subjectName: String,
 
@@ -43,6 +46,7 @@ data class Schedule(
         sunday: Boolean,
     ) : this(
         0,
+        null,
         subjectName,
         timeHour,
         timeMinute,
