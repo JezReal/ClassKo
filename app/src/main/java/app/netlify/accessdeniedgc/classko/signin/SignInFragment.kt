@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import app.netlify.accessdeniedgc.classko.databinding.FragmentSigninBinding
 import app.netlify.accessdeniedgc.classko.datastore.ClassKoDataStore
 import app.netlify.accessdeniedgc.classko.signin.SignInViewModel.SignInFragmentEvent.*
@@ -76,11 +77,12 @@ class SignInFragment : Fragment() {
         job = viewModel.signInEvent.onEach { event ->
             when (event) {
                 is AuthenticationFailure -> {
-                    dataStore.storeToken(token)
                     Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
                 }
                 is AuthenticationSuccess -> {
+                    dataStore.storeToken(token)
                     Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
+                    findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToScheduleListFragment())
                 }
                 else -> {}
             }

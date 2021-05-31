@@ -40,8 +40,10 @@ class ScheduleListFragment : Fragment() {
     private lateinit var scheduleList: List<Schedule>
     private lateinit var job: Job
     private var isUserLoggedIn = false
+
     @Inject
     lateinit var dataStore: ClassKoDataStore
+    private lateinit var token: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +57,7 @@ class ScheduleListFragment : Fragment() {
         observeState()
         observeEvents()
 
-        testDataStore()
+        listenFromDataStore()
 
         setHasOptionsMenu(true)
 
@@ -164,11 +166,11 @@ class ScheduleListFragment : Fragment() {
         }
     }
 
-    private fun exportSchedules() {
+    private fun exportSchedules(token: String) {
         if (scheduleList.isEmpty()) {
             Snackbar.make(binding.root, "Cannot export empty data", Snackbar.LENGTH_SHORT).show()
         } else {
-            viewModel.exportSchedules(scheduleList)
+            viewModel.exportSchedules(token, scheduleList)
         }
     }
 
@@ -199,7 +201,7 @@ class ScheduleListFragment : Fragment() {
         return when (item.itemId) {
             R.id.get_class_schedules -> {
                 if (isUserLoggedIn) {
-                    viewModel.getClassSchedules()
+                    viewModel.getClassSchedules(token)
                 } else {
                     showSignInDialog()
                 }
@@ -221,7 +223,7 @@ class ScheduleListFragment : Fragment() {
             }
             R.id.export_schedules -> {
                 if (isUserLoggedIn) {
-                    exportSchedules()
+                    exportSchedules(token)
                 } else {
                     showSignInDialog()
                 }
@@ -236,11 +238,12 @@ class ScheduleListFragment : Fragment() {
         }
     }
 
-    private fun testDataStore() {
+    private fun listenFromDataStore() {
         dataStore.tokenFlow.asLiveData().observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 Timber.d("Token: $it")
                 isUserLoggedIn = true
+                token = it
             }
         }
     }

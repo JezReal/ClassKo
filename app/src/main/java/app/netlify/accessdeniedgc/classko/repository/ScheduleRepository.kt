@@ -17,9 +17,9 @@ class ScheduleRepository @Inject constructor(
 
     val schedules = dao.getSchedules()
 
-    suspend fun importSchedule(id: String): Resource<Schedule> {
+    suspend fun importSchedule(token: String, id: String): Resource<Schedule> {
         return try {
-            val response = api.getSchedule(id)
+            val response = api.getSchedule(token, id)
             val result = response.body()
 
             if (response.isSuccessful && result != null) {
@@ -39,9 +39,9 @@ class ScheduleRepository @Inject constructor(
     }
 
 
-    suspend fun exportSchedules(schedule: Schedule): Resource<ScheduleResponse> {
+    suspend fun exportSchedules(token: String, schedule: Schedule): Resource<ScheduleResponse> {
         return try {
-            val response = api.addSchedule(schedule)
+            val response = api.addSchedule(token, schedule)
             val result = response.body()
 
             if (response.isSuccessful && result != null) {
@@ -58,9 +58,9 @@ class ScheduleRepository @Inject constructor(
         }
     }
 
-    suspend fun getClassSchedules() : Resource<Schedule> {
+    suspend fun getClassSchedules(token: String): Resource<Schedule> {
         return try {
-            val response = api.getClassSchedules()
+            val response = api.getClassSchedules(token)
             val result = response.body()
 
             if (response.isSuccessful && result != null) {

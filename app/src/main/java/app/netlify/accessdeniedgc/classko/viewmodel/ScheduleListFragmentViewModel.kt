@@ -39,7 +39,7 @@ class ScheduleListFragmentViewModel @Inject constructor(
         }
     }
 
-    fun exportSchedules(scheduleDB: List<ScheduleDB>) {
+    fun exportSchedules(token: String, scheduleDB: List<ScheduleDB>) {
         viewModelScope.launch {
             _scheduleEvent.send(ShowSnackBar("Loading..."))
         }
@@ -67,7 +67,7 @@ class ScheduleListFragmentViewModel @Inject constructor(
         val schedule = Schedule(null, scheduleItems)
 
         viewModelScope.launch(Dispatchers.Default) {
-            when (val apiResponse = repository.exportSchedules(schedule)) {
+            when (val apiResponse = repository.exportSchedules(token, schedule)) {
                 is Resource.Success -> {
                     _scheduleEvent.send(ExportSuccess(apiResponse.data!!))
                 }
@@ -78,14 +78,14 @@ class ScheduleListFragmentViewModel @Inject constructor(
         }
     }
 
-    fun importSchedules(id: String) {
+    fun importSchedules(token: String, id: String) {
 
         viewModelScope.launch {
             _scheduleEvent.send(ShowSnackBar("Loading..."))
         }
 
         viewModelScope.launch(Dispatchers.Default) {
-            when (val apiResponse = repository.importSchedule(id)) {
+            when (val apiResponse = repository.importSchedule(token, id)) {
                 is Resource.Success -> {
                     _scheduleEvent.send(ImportSuccess(apiResponse.data!!))
                 }
@@ -114,13 +114,13 @@ class ScheduleListFragmentViewModel @Inject constructor(
         }
     }
 
-    fun getClassSchedules() {
+    fun getClassSchedules(token: String) {
         viewModelScope.launch {
             _scheduleEvent.send(ShowSnackBar("Loading..."))
         }
 
         viewModelScope.launch(Dispatchers.Default) {
-            when (val apiResponse = repository.getClassSchedules()) {
+            when (val apiResponse = repository.getClassSchedules(token)) {
                 is Resource.Success -> {
                     _scheduleEvent.send(ImportSuccess(apiResponse.data!!))
                 }
