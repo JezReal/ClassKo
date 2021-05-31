@@ -24,10 +24,11 @@ import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewMode
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentEvent.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -39,11 +40,13 @@ class ScheduleListFragment : Fragment() {
     private val addScheduleViewModel: AddScheduleViewModel by activityViewModels()
     private lateinit var scheduleList: List<Schedule>
     private lateinit var job: Job
-    private var isUserLoggedIn = false
 
     @Inject
     lateinit var dataStore: ClassKoDataStore
     private lateinit var token: String
+
+    private var isUserLoggedIn = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -204,33 +207,33 @@ class ScheduleListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.get_class_schedules -> {
-                if (isUserLoggedIn) {
-                    viewModel.getClassSchedules(token)
-                } else {
-                    showSignInDialog()
-                }
+                viewModel.getClassSchedules(token)
+
                 true
             }
-
             R.id.clear_database -> {
                 viewModel.clearDatabase()
                 Notifier.cancelAllNotifications(scheduleList, requireContext().applicationContext)
+
                 true
             }
             R.id.import_schedules -> {
-                if (isUserLoggedIn) {
-                    findNavController().navigate(ScheduleListFragmentDirections.actionScheduleListFragmentToImportScheduleDialog())
-                } else {
-                    showSignInDialog()
-                }
+                findNavController().navigate(ScheduleListFragmentDirections.actionScheduleListFragmentToImportScheduleDialog())
+
                 true
             }
             R.id.export_schedules -> {
-                if (isUserLoggedIn) {
-                    exportSchedules(token)
-                } else {
-                    showSignInDialog()
-                }
+                exportSchedules(token)
+                showSignInDialog()
+
+                true
+            }
+            R.id.sign_in -> {
+                signIn()
+                true
+            }
+            R.id.sign_out -> {
+                signOut()
                 true
             }
             else -> {
@@ -241,6 +244,7 @@ class ScheduleListFragment : Fragment() {
             }
         }
     }
+
 
     private fun listenFromDataStore() {
         dataStore.tokenFlow.asLiveData().observe(viewLifecycleOwner) {
@@ -265,5 +269,17 @@ class ScheduleListFragment : Fragment() {
         builder.setNegativeButton("Cancel") { _, _ ->
         }
         builder.show()
+    }
+
+    private fun signOut() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            dataStore.storeToken("")
+        }
+        Snackbar.make(binding.root, "You have been logged out. Sharing is now disabled", Snackbar.LENGTH_LONG).show()
+        isUserLoggedIn = false
+    }
+
+    private fun signIn() {
+        findNavController().navigate(ScheduleListFragmentDirections.actionScheduleListFragmentToSignInFragment())
     }
 }
