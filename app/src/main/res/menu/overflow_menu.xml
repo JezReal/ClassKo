@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/get_class_schedules"
+        android:title="@string/get_class_schedules" />
+
+    <item
         android:id="@+id/import_schedules"
         android:title="@string/import_schedules_text" />
 
