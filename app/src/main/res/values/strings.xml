@@ -20,4 +20,5 @@
     <string name="share_schedules_text">Share schedules</string>
     <string name="delete_all_schedules_text">Delete all schedules</string>
     <string name="guide_text">Add a schedule by clicking on the + icon below or import your friends schedules by clicking on the menu above then import</string>
+    <string name="get_class_schedules">Get class schedules</string>
 </resources>
