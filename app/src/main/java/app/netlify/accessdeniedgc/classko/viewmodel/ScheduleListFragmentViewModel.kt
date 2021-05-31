@@ -51,6 +51,7 @@ class ScheduleListFragmentViewModel @Inject constructor(
             scheduleItems.add(
                 ScheduleItem(
                     it.subjectName,
+                    it.type,
                     it.timeHour,
                     it.timeMinute,
                     it.monday,
@@ -64,7 +65,7 @@ class ScheduleListFragmentViewModel @Inject constructor(
             )
         }
 
-        val schedule = Schedule(null, scheduleItems)
+        val schedule = Schedule(scheduleItems)
 
         viewModelScope.launch(Dispatchers.Default) {
             when (val apiResponse = repository.exportSchedules(token, schedule)) {
@@ -116,18 +117,24 @@ class ScheduleListFragmentViewModel @Inject constructor(
 
     fun getClassSchedules(token: String) {
         viewModelScope.launch {
-            _scheduleEvent.send(ShowSnackBar("Loading..."))
+            _scheduleEvent.send(ShowSnackBar("Loading class schedule"))
         }
 
         viewModelScope.launch(Dispatchers.Default) {
             when (val apiResponse = repository.getClassSchedules(token)) {
                 is Resource.Success -> {
-                    _scheduleEvent.send(ImportSuccess(apiResponse.data!!))
+                    _scheduleEvent.send(GetClassScheduleSuccess(apiResponse.data!!))
                 }
                 is Resource.Failure -> {
-                    _scheduleEvent.send(ImportFailure(apiResponse.message!!))
+                    _scheduleEvent.send(GetClassScheduleFailure(apiResponse.message!!))
                 }
             }
+        }
+    }
+
+    fun deleteClassSchedules() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteClassSchedules()
         }
     }
 
@@ -143,6 +150,7 @@ class ScheduleListFragmentViewModel @Inject constructor(
         class ExportFailure(val message: String) : ScheduleListFragmentEvent()
         class ImportSuccess(val response: Schedule) : ScheduleListFragmentEvent()
         class ImportFailure(val message: String) : ScheduleListFragmentEvent()
+        class GetClassScheduleSuccess(val classSchedules: Schedule) : ScheduleListFragmentEvent()
         class GetClassScheduleFailure(val message: String) : ScheduleListFragmentEvent()
     }
 }

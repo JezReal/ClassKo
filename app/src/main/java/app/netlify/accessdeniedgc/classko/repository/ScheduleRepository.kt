@@ -98,4 +98,8 @@ class ScheduleRepository @Inject constructor(
     suspend fun clearDatabase() {
         dao.clear()
     }
+
+    suspend fun deleteClassSchedules() {
+        dao.deleteClassSchedules()
+    }
 }

@@ -24,4 +24,7 @@ interface ScheduleDao {
 
     @Query("DELETE FROM schedule_table")
     fun clear()
+
+    @Query("DELETE FROM schedule_table WHERE type is NOT NULL")
+    fun deleteClassSchedules()
 }

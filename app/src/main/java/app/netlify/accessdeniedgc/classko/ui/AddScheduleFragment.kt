@@ -164,8 +164,8 @@ class AddScheduleFragment : BottomSheetDialogFragment() {
 
                     val newSchedule = Schedule(
                         schedule?.scheduleId ?: 0,
-                        null,
                         binding.subjectInput.text.toString(),
+                        null,
                         hour,
                         minute,
                         binding.mondayCheckbox.isChecked,

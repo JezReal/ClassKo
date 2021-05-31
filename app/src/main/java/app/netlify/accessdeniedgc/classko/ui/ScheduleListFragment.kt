@@ -94,6 +94,13 @@ class ScheduleListFragment : Fragment() {
                     is ImportFailure -> {
                         viewModel.showSnackBar(event.message)
                     }
+                    is GetClassScheduleSuccess -> {
+                        viewModel.deleteClassSchedules()
+                        viewModel.addSchedulesToDatabase(event.classSchedules)
+                    }
+                    is GetClassScheduleFailure -> {
+                        viewModel.showSnackBar(event.message)
+                    }
                 }
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
@@ -148,6 +155,7 @@ class ScheduleListFragment : Fragment() {
         schedule.scheduleItems.map {
             val newSchedule = Schedule(
                 it.subjectName,
+                it.type,
                 it.timeHour,
                 it.timeMinute,
                 it.monday,
@@ -252,6 +260,8 @@ class ScheduleListFragment : Fragment() {
                 requireActivity().invalidateOptionsMenu()
                 isUserLoggedIn = true
                 token = it
+
+                loadClassSchedules()
             } else {
                 isUserLoggedIn = false
                 requireActivity().invalidateOptionsMenu()
@@ -281,5 +291,9 @@ class ScheduleListFragment : Fragment() {
 
     private fun signIn() {
         findNavController().navigate(ScheduleListFragmentDirections.actionScheduleListFragmentToSignInFragment())
+    }
+
+    private fun loadClassSchedules() {
+        viewModel.getClassSchedules(token)
     }
 }
