@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import app.netlify.accessdeniedgc.classko.database.ScheduleDao
 import app.netlify.accessdeniedgc.classko.database.ScheduleDatabase
+import app.netlify.accessdeniedgc.classko.datastore.ClassKoDataStore
 import app.netlify.accessdeniedgc.classko.network.ClassKoApi
 import app.netlify.accessdeniedgc.classko.repository.ScheduleRepository
 import dagger.Module
@@ -41,6 +42,12 @@ class AppModule {
         )
             .fallbackToDestructiveMigration()
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideDataStore(@ApplicationContext context: Context): ClassKoDataStore {
+        return ClassKoDataStore(context)
     }
 
     @Provides
