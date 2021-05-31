@@ -232,8 +232,6 @@ class ScheduleListFragment : Fragment() {
             }
             R.id.export_schedules -> {
                 exportSchedules(token)
-                showSignInDialog()
-
                 true
             }
             R.id.sign_in -> {
