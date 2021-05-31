@@ -16,16 +16,19 @@
         <action
             android:id="@+id/action_scheduleListFragment_to_importScheduleDialog"
             app:destination="@id/importScheduleDialog" />
+        <action
+            android:id="@+id/action_scheduleListFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
     <dialog
         android:id="@+id/addScheduleFragment"
         android:name="app.netlify.accessdeniedgc.classko.ui.AddScheduleFragment"
         android:label="fragment_add_schedule"
-        tools:layout="@layout/fragment_add_schedule" >
+        tools:layout="@layout/fragment_add_schedule">
         <argument
             android:name="scheduleId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:defaultValue="-1L"
+            app:argType="long" />
     </dialog>
     <fragment
         android:id="@+id/aboutFragment"
@@ -37,4 +40,9 @@
         android:name="app.netlify.accessdeniedgc.classko.ui.ImportScheduleFragment"
         android:label="dialog_import_schedule"
         tools:layout="@layout/fragment_import_schedule" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="app.netlify.accessdeniedgc.classko.signin.SignInFragment"
+        android:label="fragment_signin"
+        tools:layout="@layout/fragment_signin" />
 </navigation>
