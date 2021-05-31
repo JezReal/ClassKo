@@ -76,6 +76,9 @@ class SignInFragment : Fragment() {
     private fun observeEvents() {
         job = viewModel.signInEvent.onEach { event ->
             when (event) {
+                is Loading -> {
+                    Snackbar.make(binding.root, "Loading", Snackbar.LENGTH_LONG).show()
+                }
                 is AuthenticationFailure -> {
                     Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
                 }
@@ -84,7 +87,6 @@ class SignInFragment : Fragment() {
                     Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
                     findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToScheduleListFragment())
                 }
-                else -> {}
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
