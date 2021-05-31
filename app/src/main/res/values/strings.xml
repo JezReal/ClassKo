@@ -21,4 +21,9 @@
     <string name="delete_all_schedules_text">Delete all schedules</string>
     <string name="guide_text">Add a schedule by clicking on the + icon below or import your friends schedules by clicking on the menu above then import</string>
     <string name="get_class_schedules">Get class schedules</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button_text">Sign in</string>
+    <string name="login_title_text">Login to ClassKo</string>
+    <string name="fragment_signin_label">Sign in</string>
 </resources>

@@ -43,6 +43,10 @@
     <fragment
         android:id="@+id/signInFragment"
         android:name="app.netlify.accessdeniedgc.classko.signin.SignInFragment"
-        android:label="fragment_signin"
-        tools:layout="@layout/fragment_signin" />
+        android:label="@string/fragment_signin_label"
+        tools:layout="@layout/fragment_signin">
+        <action
+            android:id="@+id/action_signInFragment_to_scheduleListFragment"
+            app:destination="@id/scheduleListFragment" />
+    </fragment>
 </navigation>
