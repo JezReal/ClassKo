@@ -6,7 +6,9 @@ import app.netlify.accessdeniedgc.classko.database.ScheduleDao
 import app.netlify.accessdeniedgc.classko.database.ScheduleDatabase
 import app.netlify.accessdeniedgc.classko.datastore.ClassKoDataStore
 import app.netlify.accessdeniedgc.classko.network.ClassKoApi
+import app.netlify.accessdeniedgc.classko.network.ClassKoAuthApi
 import app.netlify.accessdeniedgc.classko.repository.ScheduleRepository
+import app.netlify.accessdeniedgc.classko.signin.SigninRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +19,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 private const val CLASSKO_API_BASE_URL = "https://classko-backend.herokuapp.com/api/v1/"
+private const val CLASSKO_AUTH_API_BASE_URL = "https://classko-backend.herokuapp.com/"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -30,6 +33,16 @@ class AppModule {
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(ClassKoApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideClassKoAuthApi(): ClassKoAuthApi {
+        return Retrofit.Builder()
+            .baseUrl(CLASSKO_AUTH_API_BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+            .create(ClassKoAuthApi::class.java)
     }
 
     @Singleton
@@ -58,4 +71,6 @@ class AppModule {
     @Provides
     fun provideScheduleRepository(api: ClassKoApi, dao: ScheduleDao) = ScheduleRepository(api, dao)
 
+    @Provides
+    fun provideSignInRepository(api: ClassKoAuthApi) = SigninRepository(api)
 }
