@@ -3,6 +3,8 @@ package app.netlify.accessdeniedgc.classko.util
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
+import android.media.RingtoneManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -25,12 +27,20 @@ object Notifier {
     const val SATURDAY = "SATURDAY"
     const val SUNDAY = "SUNDAY"
     const val SUBJECT_NAME = "SUBJECT NAME"
-    const val IS_ACTIVE = "IS ACTIVE"
     const val ID = "ID"
 
     private const val RUN_DAILY: Long = 24 * 60 * 60 * 1000
 
     fun init(activity: Activity) {
+
+        val defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val attr = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_ALARM)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+
+        val vibrationPattern = longArrayOf(1000, 1000, 1000, 1000, 1000)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager =
                 activity.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
@@ -43,7 +53,9 @@ object Notifier {
                 val channel = NotificationChannel(CHANNEL_ID, name, importance)
 
                 channel.description = description
-
+                channel.enableVibration(true)
+                channel.setSound(defaultSound, attr)
+                channel.vibrationPattern = vibrationPattern
                 notificationManager.createNotificationChannel(channel)
             }
         }
@@ -52,11 +64,18 @@ object Notifier {
     fun postNotification(id: Long, context: Context, subjectName: String) {
 
         Timber.d("notification id: $id")
+
+        val defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val vibrationPattern = longArrayOf(1000, 1000, 1000, 1000, 1000)
+
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle("Time for class!")
             .setSmallIcon(R.drawable.ic_notif_icon)
             .setContentText(subjectName)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setVibrate(vibrationPattern)
+            .setSound(defaultSound)
+            .setDefaults(Notification.DEFAULT_VIBRATE)
             .build()
 
         with(NotificationManagerCompat.from(context)) {
