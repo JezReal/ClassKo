@@ -139,6 +139,9 @@ dependencies {
 
     // Flexbox layout
     implementation "com.google.android:flexbox:$flex_version"
+
+    //Data store prefs
+    implementation "androidx.datastore:datastore-preferences:$datastoreprefs_version"
 }
 
 kapt {

@@ -16,6 +16,7 @@ buildscript {
         moshi_version = "1.11.0"
         glide_version = "4.12.0"
         flex_version = "2.0.1"
+        datastoreprefs_version = "1.0.0-beta01"
     }
     repositories {
         google()
