@@ -11,6 +11,9 @@ interface ClassKoApi {
     @GET("schedule/{id}")
     suspend fun getSchedule(@Path("id") id: String): Response<Schedule>
 
+    @GET("schedules/dummy")
+    suspend fun getClassSchedules(): Response<Schedule>
+
     @POST("schedule")
     suspend fun addSchedule(@Body schedule: Schedule): Response<ScheduleResponse>
 }
