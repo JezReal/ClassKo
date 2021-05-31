@@ -9,24 +9,26 @@ import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import app.netlify.accessdeniedgc.classko.R
 import app.netlify.accessdeniedgc.classko.database.Schedule
 import app.netlify.accessdeniedgc.classko.databinding.FragmentScheduleListBinding
+import app.netlify.accessdeniedgc.classko.datastore.ClassKoDataStore
 import app.netlify.accessdeniedgc.classko.recyclerview.ScheduleAdapter
 import app.netlify.accessdeniedgc.classko.util.Notifier
 import app.netlify.accessdeniedgc.classko.viewmodel.AddScheduleViewModel
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel
 import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentEvent.*
-import app.netlify.accessdeniedgc.classko.viewmodel.ScheduleListFragmentViewModel.ScheduleListFragmentState.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -37,6 +39,9 @@ class ScheduleListFragment : Fragment() {
     private val addScheduleViewModel: AddScheduleViewModel by activityViewModels()
     private lateinit var scheduleList: List<Schedule>
     private lateinit var job: Job
+    private var isUserLoggedIn = false
+    @Inject
+    lateinit var dataStore: ClassKoDataStore
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +54,8 @@ class ScheduleListFragment : Fragment() {
         observeData()
         observeState()
         observeEvents()
+
+        testDataStore()
 
         setHasOptionsMenu(true)
 
@@ -191,7 +198,11 @@ class ScheduleListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.get_class_schedules -> {
-                viewModel.getClassSchedules()
+                if (isUserLoggedIn) {
+                    viewModel.getClassSchedules()
+                } else {
+                    showSignInDialog()
+                }
                 true
             }
 
@@ -201,11 +212,19 @@ class ScheduleListFragment : Fragment() {
                 true
             }
             R.id.import_schedules -> {
-                findNavController().navigate(ScheduleListFragmentDirections.actionScheduleListFragmentToImportScheduleDialog())
+                if (isUserLoggedIn) {
+                    findNavController().navigate(ScheduleListFragmentDirections.actionScheduleListFragmentToImportScheduleDialog())
+                } else {
+                    showSignInDialog()
+                }
                 true
             }
             R.id.export_schedules -> {
-                exportSchedules()
+                if (isUserLoggedIn) {
+                    exportSchedules()
+                } else {
+                    showSignInDialog()
+                }
                 true
             }
             else -> {
@@ -215,5 +234,26 @@ class ScheduleListFragment : Fragment() {
                 ) || super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    private fun testDataStore() {
+        dataStore.tokenFlow.asLiveData().observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                Timber.d("Token: $it")
+                isUserLoggedIn = true
+            }
+        }
+    }
+
+    private fun showSignInDialog() {
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle("Notice")
+        builder.setMessage("This feature requires you to sign in. Would you like to sign in?")
+        builder.setPositiveButton("Sign in") { _, _ ->
+            findNavController().navigate(ScheduleListFragmentDirections.actionScheduleListFragmentToSignInFragment())
+        }
+        builder.setNegativeButton("Cancel") { _, _ ->
+        }
+        builder.show()
     }
 }
