@@ -5,7 +5,6 @@ import app.netlify.accessdeniedgc.classko.network.ClassKoApi
 import app.netlify.accessdeniedgc.classko.network.Schedule
 import app.netlify.accessdeniedgc.classko.network.ScheduleResponse
 import app.netlify.accessdeniedgc.classko.wrapper.Resource
-import timber.log.Timber
 import java.net.UnknownHostException
 import javax.inject.Inject
 import app.netlify.accessdeniedgc.classko.database.Schedule as ScheduleDB
@@ -27,6 +26,8 @@ class ScheduleRepository @Inject constructor(
                 Resource.Success(result)
             } else if (response.code() == 404) {
                 Resource.Failure("Schedule not found")
+            } else if (response.code() == 403) {
+                Resource.Failure("You need to sign in to continue")
             } else {
                 Resource.Failure("Unexpected error: ${response.code()}")
             }
@@ -45,8 +46,31 @@ class ScheduleRepository @Inject constructor(
 
             if (response.isSuccessful && result != null) {
                 Resource.Success(result)
+            } else if (response.code() == 403) {
+                Resource.Failure("You need to sign in to continue")
             } else {
                 Resource.Failure(response.message())
+            }
+        } catch (e: UnknownHostException) {
+            Resource.Failure("No internet")
+        } catch (e: Exception) {
+            Resource.Failure(e.localizedMessage!!)
+        }
+    }
+
+    suspend fun getClassSchedules() : Resource<Schedule> {
+        return try {
+            val response = api.getClassSchedules()
+            val result = response.body()
+
+            if (response.isSuccessful && result != null) {
+                Resource.Success(result)
+            } else if (response.code() == 404) {
+                Resource.Failure("Schedule not found")
+            } else if (response.code() == 403) {
+                Resource.Failure("You need to sign in to continue")
+            } else {
+                Resource.Failure("Unexpected error: ${response.code()}")
             }
         } catch (e: UnknownHostException) {
             Resource.Failure("No internet")
