@@ -24,6 +24,8 @@ class SigninRepository @Inject constructor(
             }
         } catch (e : UnknownHostException) {
             return Resource.Failure("No connection")
+        } catch (e : Exception) {
+            return Resource.Failure(e.localizedMessage!!)
         }
 
         return Resource.Failure("Invalid credentials")
