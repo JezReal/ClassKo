@@ -194,7 +194,11 @@ class ScheduleListFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.overflow_menu, menu)
+        if (isUserLoggedIn) {
+            inflater.inflate(R.menu.signin_overflow_menu, menu)
+        } else {
+            inflater.inflate(R.menu.default_overflow_menu, menu)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -241,9 +245,12 @@ class ScheduleListFragment : Fragment() {
     private fun listenFromDataStore() {
         dataStore.tokenFlow.asLiveData().observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                Timber.d("Token: $it")
+                requireActivity().invalidateOptionsMenu()
                 isUserLoggedIn = true
                 token = it
+            } else {
+                isUserLoggedIn = false
+                requireActivity().invalidateOptionsMenu()
             }
         }
     }
