@@ -64,7 +64,7 @@ class ScheduleListFragmentViewModel @Inject constructor(
             )
         }
 
-        val schedule = Schedule(scheduleItems)
+        val schedule = Schedule(null, scheduleItems)
 
         viewModelScope.launch(Dispatchers.Default) {
             when (val apiResponse = repository.exportSchedules(schedule)) {
@@ -114,9 +114,25 @@ class ScheduleListFragmentViewModel @Inject constructor(
         }
     }
 
+    fun getClassSchedules() {
+        viewModelScope.launch {
+            _scheduleEvent.send(ShowSnackBar("Loading..."))
+        }
+
+        viewModelScope.launch(Dispatchers.Default) {
+            when (val apiResponse = repository.getClassSchedules()) {
+                is Resource.Success -> {
+                    _scheduleEvent.send(ImportSuccess(apiResponse.data!!))
+                }
+                is Resource.Failure -> {
+                    _scheduleEvent.send(ImportFailure(apiResponse.message!!))
+                }
+            }
+        }
+    }
+
     sealed class ScheduleListFragmentState {
         object Empty : ScheduleListFragmentState()
-//        object Loading : ScheduleListFragmentEvent()
     }
 
     sealed class ScheduleListFragmentEvent {
@@ -127,5 +143,6 @@ class ScheduleListFragmentViewModel @Inject constructor(
         class ExportFailure(val message: String) : ScheduleListFragmentEvent()
         class ImportSuccess(val response: Schedule) : ScheduleListFragmentEvent()
         class ImportFailure(val message: String) : ScheduleListFragmentEvent()
+        class GetClassScheduleFailure(val message: String) : ScheduleListFragmentEvent()
     }
 }
