@@ -30,6 +30,7 @@
         android:visibility="gone"
         tools:visibility="visible"
         android:textSize="15sp"
+        android:textColor="@color/white"
         android:id="@+id/guide_text"
         android:layout_marginHorizontal="16dp"
         android:text="@string/guide_text"
