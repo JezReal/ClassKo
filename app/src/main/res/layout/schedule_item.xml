@@ -7,6 +7,7 @@
     android:layout_marginBottom="4dp"
     android:layout_marginTop="4dp"
     android:layout_marginHorizontal="4dp"
+    android:background="@color/light_blue"
     app:cardCornerRadius="4dp">
 
     <LinearLayout
@@ -20,6 +21,9 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
             tools:text="Subject title here" />
 
         <TextView
@@ -28,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:textColor="@color/lighter_than_dark_blue"
             tools:text="Time here" />
 
         <TextView
@@ -36,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:textColor="@color/light_blue"
             tools:text="Mon " />
 
     </LinearLayout>
